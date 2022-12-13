@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    // 转换成js的es版本，esnext指es6+（后面的低版本适配交由babel处理）
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    // 模块化使用的es方案
+    "module": "ESNext",
+    // 按照node的模式解析导入的模块（即既定顺序的文件名+后缀带入逐个匹配）
+    "moduleResolution": "Node",
+    // 严格模式检查
+    "strict": true,
+    // 对jsx做保留，不做转化
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    // 以下两个配置决定commonjs和esmodules是否能混合使用
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    // 指定项目中可以使用哪些库的类型
+    "lib": ["ESNext", "DOM"],
+    // 跳过一些库的类型检测
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "noEmit": true,
+    "types": ["element-plus/global"],
+    /* 配置paths前置需要配置baseUrl（文件路径解析的基本url），paths可以根据vite.config.ts内的别名分别配置直接使用还是使用子文件，方便ts校验和提示在别名引入的文件内也能全部生效 */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "service": ["src/service"],
+      "service/*": ["src/service/*"],
+      "views": ["src/views"],
+      "views/*": ["src/views/*"],
+      "components": ["src/components"],
+      "components/*": ["src/components/*"],
+      "assets": ["src/assets"],
+      "assets/*": ["src/assets/*"],
+      "store": ["src/store"],
+      "store/*": ["src/store/*"]
+    }
+  },
+  // 需要做ts解析的文件有哪些
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  // 在需要做ts解析的文件内如果引入了node_modules内的文件，不对引入文件做解析
+  "exclude": ["node_modules"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
