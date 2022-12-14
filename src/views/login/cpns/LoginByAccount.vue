@@ -1,58 +1,41 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import type { FormInstance } from 'element-plus';
+import { rules } from '../config/accout-config';
 
-const ruleFormRef = ref<FormInstance>();
+const accountFormRef = ref<FormInstance>();
 
-const checkAccount = (rule: any, value: any, callback: any) => {
-  if (!value) {
-    return callback(new Error('请输入账号'));
-  }
-  if (!/^[a-zA-Z0-9]{6,10}$/.test(value)) {
-    callback(new Error('请输入6~10位英文或数字'));
-  } else {
-    callback();
-  }
-};
-
-const validatePass = (rule: any, value: any, callback: any) => {
-  if (!value) {
-    return callback(new Error('请输入密码'));
-  }
-  if (!/^[a-zA-Z0-9]{6,16}$/.test(value)) {
-    callback(new Error('请输入6~16位英文或数字'));
-  } else {
-    callback();
-  }
-};
-
-const ruleForm = reactive({
+const accountForm = reactive({
   account: '',
   password: ''
 });
 
-const rules = reactive({
-  account: [{ validator: checkAccount, trigger: 'blur', required: true }],
-  password: [{ validator: validatePass, trigger: 'blur', required: true }]
-});
+function loginAction() {
+  accountFormRef.value?.validate(pass => {
+    if (pass) {
+      console.log('校验成功', accountForm);
+    }
+  });
+}
+
+defineExpose({ loginAction });
 </script>
 
 <template>
   <div class="LoginByAccount__wrapper">
     <el-form
-      ref="ruleFormRef"
-      :model="ruleForm"
+      ref="accountFormRef"
+      :model="accountForm"
       status-icon
       :rules="rules"
       label-width="80px"
-      class="demo-ruleForm"
     >
       <el-form-item label="账号" prop="account">
-        <el-input v-model="ruleForm.account" />
+        <el-input v-model="accountForm.account" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input
-          v-model="ruleForm.password"
+          v-model="accountForm.password"
           type="password"
           autocomplete="off"
         />
