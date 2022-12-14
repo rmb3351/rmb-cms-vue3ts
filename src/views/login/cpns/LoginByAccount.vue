@@ -2,18 +2,28 @@
 import { reactive, ref } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { rules } from '../config/accout-config';
+import loCache from '@/utils/loCache';
 
 const accountFormRef = ref<FormInstance>();
+const accountStr = 'account';
+const passwordStr = 'password';
 
 const accountForm = reactive({
-  account: '',
-  password: ''
+  account: loCache.get(accountStr) ?? '',
+  password: loCache.get(passwordStr) ?? ''
 });
 
-function loginAction() {
+function loginAction(isRemember: boolean) {
   accountFormRef.value?.validate(pass => {
     if (pass) {
-      console.log('校验成功', accountForm);
+      /* 缓存或清除缓存 */
+      if (isRemember) {
+        loCache.set(accountStr, accountForm.account);
+        loCache.set(passwordStr, accountForm.password);
+      } else {
+        loCache.remove(accountStr);
+        loCache.remove(passwordStr);
+      }
     }
   });
 }
@@ -30,13 +40,13 @@ defineExpose({ loginAction });
       :rules="rules"
       label-width="80px"
     >
-      <el-form-item label="账号" prop="account">
+      <el-form-item label="账号" :prop="accountStr">
         <el-input v-model="accountForm.account" />
       </el-form-item>
-      <el-form-item label="密码" prop="password">
+      <el-form-item label="密码" :prop="passwordStr">
         <el-input
           v-model="accountForm.password"
-          type="password"
+          show-password
           autocomplete="off"
         />
       </el-form-item>

@@ -17,7 +17,7 @@ function getCode() {
 function loginAction() {
   phoneFormRef.value?.validate(pass => {
     if (pass) {
-      console.log('校验成功', accountForm);
+      console.log('校验成功', phoneForm);
     }
   });
 }
@@ -46,7 +46,7 @@ defineExpose({ loginAction });
 </template>
 
 <style lang="less" scoped>
-/deep/.el-form-item__content {
+:deep(.el-form-item__content) {
   display: flex;
   flex-wrap: nowrap;
   .el-input {

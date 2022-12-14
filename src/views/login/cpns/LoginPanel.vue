@@ -8,7 +8,8 @@ const accountRef = ref<InstanceType<typeof LoginByAccount>>();
 const phoneRef = ref<InstanceType<typeof LoginByPhone>>();
 
 function handleLoginBtnClick() {
-  if (tabChosen.value === 'account') accountRef.value?.loginAction();
+  if (tabChosen.value === 'account')
+    accountRef.value?.loginAction(isRemember.value);
   else phoneRef.value?.loginAction();
 }
 const tabChosen = ref('account');
