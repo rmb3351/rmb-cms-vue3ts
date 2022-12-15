@@ -5,7 +5,10 @@ const rmbRequest = new RMBRequest({
   timeout: TIME_OUT,
   interceptors: {
     requestInterceptor(config) {
-      console.log('配置的实例请求拦截器');
+      const token = '';
+      if (token) {
+        config.headers!.Authorization = `Bearer ${token}`;
+      }
       return config;
     },
     responseInterceptor(res) {

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import type { FormInstance } from 'element-plus';
+import { storeToRefs } from 'pinia';
 import { rules } from '../config/accout-config';
 import loCache from '@/utils/loCache';
+import useLogin from '@/store/login/login';
 
 const accountFormRef = ref<FormInstance>();
 const accountStr = 'account';
@@ -12,6 +14,8 @@ const accountForm = reactive({
   account: loCache.get(accountStr) ?? '',
   password: loCache.get(passwordStr) ?? ''
 });
+
+const loginStore = useLogin();
 
 function loginAction(isRemember: boolean) {
   accountFormRef.value?.validate(pass => {
@@ -24,6 +28,11 @@ function loginAction(isRemember: boolean) {
         loCache.remove(accountStr);
         loCache.remove(passwordStr);
       }
+      const loginParam = {
+        name: accountForm.account,
+        password: accountForm.password
+      };
+      loginStore.accountLoginAction(loginParam);
     }
   });
 }
