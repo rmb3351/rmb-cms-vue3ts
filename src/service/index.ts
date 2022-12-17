@@ -1,18 +1,18 @@
 import RMBRequest from './request/request';
 import { BASE_URL, TIME_OUT } from './request/config';
+import loCache from '@/utils/loCache';
 const rmbRequest = new RMBRequest({
   baseURL: BASE_URL,
   timeout: TIME_OUT,
   interceptors: {
     requestInterceptor(config) {
-      const token = '';
+      const token = loCache.get('token');
       if (token) {
         config.headers!.Authorization = `Bearer ${token}`;
       }
       return config;
     },
     responseInterceptor(res) {
-      console.log('配置的实例响应拦截器');
       return res;
     }
   }

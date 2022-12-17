@@ -1,11 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 // type不加也可以，为了区分这个是类型不是函数
 import type { RouteRecordRaw } from 'vue-router';
+import loCache from '@/utils/loCache';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/main'
   },
   {
     path: '/login',
@@ -21,5 +22,10 @@ const router = createRouter({
   routes,
   history: createWebHashHistory()
 });
-
+router.beforeEach((to, from) => {
+  if (to.path !== '/login') {
+    const token = loCache.get('token');
+    if (!token) return '/login';
+  }
+});
 export default router;

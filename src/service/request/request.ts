@@ -36,7 +36,6 @@ class RMBRequest {
 
     /* 这里可以配置所有请求都有的拦截器 */
     this.instance.interceptors.request.use(config => {
-      console.log('全局请求拦截器');
       // 如果showLoading为true，再给loadingInstance赋值，后面好关
       if (this.showLoading)
         this.loadingInstance = ElLoading.service({
@@ -47,7 +46,6 @@ class RMBRequest {
       return config;
     });
     this.instance.interceptors.response.use(res => {
-      console.log('全局响应拦截器');
       this.loadingInstance?.close();
       return res.data;
     });
