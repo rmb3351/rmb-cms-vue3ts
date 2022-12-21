@@ -1,14 +1,22 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import NavMenu from '@/components/nav-menu';
+import NavHeader from '@/components/nav-header';
+const isFold = ref(false);
+function handleFoldChange(iconIsFold: boolean) {
+  isFold.value = !iconIsFold;
+}
 </script>
 
 <template>
   <el-container class="Main__wrapper">
-    <el-aside class="menus__wrapper">
-      <NavMenu></NavMenu>
+    <el-aside class="menus__wrapper" :width="isFold ? '70px' : '220px'">
+      <NavMenu :isFold="isFold"></NavMenu>
     </el-aside>
     <el-container>
-      <el-header class="main__header">Header</el-header>
+      <el-header class="main__header">
+        <NavHeader @is-fold-change="handleFoldChange"></NavHeader>
+      </el-header>
       <el-main class="main__content">Main</el-main>
     </el-container>
   </el-container>
@@ -19,9 +27,10 @@ import NavMenu from '@/components/nav-menu';
   height: 100%;
 }
 .menus__wrapper {
-  width: 220px;
   height: 100%;
   background-color: #122c3d;
+  // el-aside修改宽度不自带动画了，自己写个过渡
+  transition: width 0.5s;
 }
 .main__header {
   background-color: #eee;

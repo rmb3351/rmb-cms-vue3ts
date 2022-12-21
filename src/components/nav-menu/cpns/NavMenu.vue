@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import useLogin from '@/store/login/login';
-import { computed } from '@vue/runtime-core';
 const loginStore = useLogin();
 /* 抽菜单的index属性和icon属性出来 */
 const menuIndex = computed(() => {
@@ -9,17 +9,30 @@ const menuIndex = computed(() => {
 const menuIcon = computed(() => {
   return (icon: string): string => icon.replace('el-icon', '');
 });
+defineProps({
+  isFold: {
+    type: Boolean,
+    default: false
+  }
+});
 </script>
 
 <template>
   <div class="NavMenu__wrapper">
     <div class="menu-logo__wrapper">
       <img src="~@/assets/img/logo.svg" alt="logo" />
-      <span>rmb-cms</span>
+      <span v-show="!isFold">rmb-cms</span>
     </div>
     <div class="menu-content__wrapper">
       <!-- 这里默认子菜单没有子菜单且没有图标，第一级菜单有图标，如果有变化，可以修改或者不使用template写法 -->
-      <el-menu default-active="2" class="el-menu-vertical-demo">
+      <el-menu
+        default-active="2"
+        class="el-menu-vertical-demo"
+        active-text-color="#ffd04b"
+        background-color="#122c3d"
+        text-color="#fff"
+        :collapse="isFold"
+      >
         <template v-for="mainMenu in loginStore.userMenus" :key="mainMenu.id">
           <!-- 有子菜单的一级菜单 -->
           <el-sub-menu
@@ -62,11 +75,14 @@ const menuIcon = computed(() => {
   align-items: center;
   img {
     height: 60%;
-    margin: 0 10px;
+    margin: 0 15px;
   }
   span {
     font-size: 16px;
     color: #fff;
   }
+}
+.el-menu-vertical-demo {
+  border-right: none;
 }
 </style>
