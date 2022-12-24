@@ -17,7 +17,10 @@ function handleFoldChange(iconIsFold: boolean) {
       <el-header class="main__header">
         <NavHeader @is-fold-change="handleFoldChange"></NavHeader>
       </el-header>
-      <el-main class="main__content">Main</el-main>
+      <el-main class="main__content">
+        <!-- 这里的router-view要正常生效，首先要addRoute时添加了main作为父路由的名称，其次还要在router/index.ts内给main的route对象加上name属性 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>

@@ -8,6 +8,7 @@ import {
 import loCache from '@/utils/loCache';
 import { IMenus } from '@/service/request/login/type';
 import router from '@/router';
+import { mapMenusToRoutes } from '@/utils/mapMenus';
 const useLogin = defineStore('login', {
   state: () => ({
     userInfo: {},
@@ -15,6 +16,9 @@ const useLogin = defineStore('login', {
     userMenus: [] as IMenus[]
   }),
   actions: {
+    changeUserMenus() {
+      mapMenusToRoutes(this.userMenus);
+    },
     async accountLoginAction(loginInfo: ILoginInfo) {
       /* 三个请求有先后顺序，必须依次调用，且所有数据都在本地存一份 */
       const {
@@ -30,6 +34,7 @@ const useLogin = defineStore('login', {
       const userMenus = await getUserMenuByRoleId(userInfo.data.role.id);
       this.userMenus = userMenus.data;
       loCache.set('userMenus', this.userMenus);
+      this.changeUserMenus();
 
       router.push('/main');
     },

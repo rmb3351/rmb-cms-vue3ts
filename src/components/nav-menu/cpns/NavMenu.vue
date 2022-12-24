@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import useLogin from '@/store/login/login';
+import type { IMenus } from '@/service/request/login/type';
 const loginStore = useLogin();
 /* 抽菜单的index属性和icon属性出来 */
 const menuIndex = computed(() => {
@@ -9,12 +11,17 @@ const menuIndex = computed(() => {
 const menuIcon = computed(() => {
   return (icon: string): string => icon.replace('el-icon', '');
 });
+const router = useRouter();
 defineProps({
   isFold: {
     type: Boolean,
     default: false
   }
 });
+
+function toMenuPage(item: IMenus) {
+  router.push({ path: item.url ?? '/not-found' });
+}
 </script>
 
 <template>
@@ -42,13 +49,16 @@ defineProps({
             <!-- 菜单标题插槽 -->
             <template #title>
               <el-icon>
-                <component :is="menuIcon(mainMenu.icon)"></component>
+                <component :is="menuIcon(String(mainMenu.icon))"></component>
               </el-icon>
               <span>{{ mainMenu.name }}</span>
             </template>
             <!-- 遍历子菜单 -->
             <template v-for="subMenu in mainMenu.children" :key="subMenu.id">
-              <el-menu-item :index="menuIndex(subMenu.id)">
+              <el-menu-item
+                :index="menuIndex(subMenu.id)"
+                @click="toMenuPage(subMenu)"
+              >
                 <span>{{ subMenu.name }}</span>
               </el-menu-item>
             </template>
@@ -57,7 +67,7 @@ defineProps({
           <el-menu-item v-else :index="menuIndex(mainMenu.id)">
             <el-menu-item>
               <el-icon>
-                <component :is="menuIcon(mainMenu.icon)"></component>
+                <component :is="menuIcon(String(mainMenu.icon))"></component>
               </el-icon>
               <span>{{ mainMenu.name }}</span>
             </el-menu-item>

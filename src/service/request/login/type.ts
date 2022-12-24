@@ -48,21 +48,12 @@ interface IRole {
 /* 用户菜单相关类型，用json2ts生成 */
 export interface IMenus {
   id: number;
-  name: string;
-  type: number;
-  url: string;
-  icon: string;
-  sort: number;
-  children: IChildMenus[];
-}
-
-interface IChildMenus {
-  id: number;
   url?: string | null;
   name: string;
-  sort?: number | null;
   type: number;
-  children?: (IChildMenus | any[] | null)[];
-  parentId: number;
+  sort?: number | null;
+  children: IMenus[];
+  icon?: string | null;
+  parentId?: number | null;
   permission?: string;
 }
