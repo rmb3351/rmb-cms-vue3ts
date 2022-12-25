@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import type { ILoginInfo } from './type';
+import type { RouteRecordRaw } from 'vue-router';
 import {
   accountLoginRequest,
   getUserInfoById,
@@ -46,6 +47,11 @@ const useLogin = defineStore('login', {
       if (userInfo) this.userInfo = userInfo;
       const userMenus = loCache.get('userMenus');
       if (userMenus) this.userMenus = userMenus;
+      const routes = loCache.saferGet('routes', ['component']);
+      if (routes)
+        routes.forEach((route: RouteRecordRaw) => {
+          if (!router.hasRoute(route.name!)) router.addRoute('main', route);
+        });
     }
   }
 });
