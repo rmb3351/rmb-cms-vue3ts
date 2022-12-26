@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { ILoginInfo } from './type';
+import type { ILoginInfo, IUserInfo } from './type';
 import type { RouteRecordRaw } from 'vue-router';
 import {
   accountLoginRequest,
@@ -12,7 +12,7 @@ import router from '@/router';
 import { mapMenusToRoutes } from '@/utils/mapMenus';
 const useLogin = defineStore('login', {
   state: () => ({
-    userInfo: {},
+    userInfo: {} as IUserInfo,
     token: '',
     userMenus: [] as IMenus[]
   }),
