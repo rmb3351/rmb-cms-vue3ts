@@ -19,7 +19,7 @@ function handleFoldChange(iconIsFold: boolean) {
       </el-header>
       <el-main class="main__content">
         <!-- 这里的router-view要正常生效，首先要addRoute时添加了main作为父路由的名称，其次还要在router/index.ts内给main的route对象加上name属性 -->
-        <router-view></router-view>
+        <router-view class="main__comp"></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -41,5 +41,9 @@ function handleFoldChange(iconIsFold: boolean) {
 .main__content {
   text-align: center;
   background-color: #dbdbdd;
+  .main__comp {
+    background-color: #fff;
+    border-radius: 5px;
+  }
 }
 </style>
