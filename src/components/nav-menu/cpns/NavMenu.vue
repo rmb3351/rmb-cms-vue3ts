@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import useLogin from '@/store/login/login';
 import type { IMenus } from '@/service/request/login/type';
+import { getCurrentMenuId } from '@/utils/mapMenus';
 const loginStore = useLogin();
 /* 抽菜单的index属性和icon属性出来 */
 const menuIndex = computed(() => {
@@ -22,6 +23,12 @@ defineProps({
 function toMenuPage(item: IMenus) {
   router.push({ path: item.url ?? '/not-found' });
 }
+
+/* 获取当前defaultActiveId */
+const route = useRoute();
+const defaultActiveId = ref(
+  getCurrentMenuId(route.fullPath, loginStore.userMenus)
+);
 </script>
 
 <template>
@@ -33,7 +40,7 @@ function toMenuPage(item: IMenus) {
     <div class="menu-content__wrapper">
       <!-- 这里默认子菜单没有子菜单且没有图标，第一级菜单有图标，如果有变化，可以修改或者不使用template写法 -->
       <el-menu
-        default-active="2"
+        :default-active="defaultActiveId"
         class="el-menu-vertical-demo"
         active-text-color="#ffd04b"
         background-color="#122c3d"

@@ -36,8 +36,6 @@ const useLogin = defineStore('login', {
       this.userMenus = userMenus.data;
       loCache.set('userMenus', this.userMenus);
       this.changeUserMenus();
-
-      router.push('/main');
     },
     /* 刷新后从localStorage同步login的几个state */
     syncLocalData() {

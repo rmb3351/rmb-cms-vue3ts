@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 // type不加也可以，为了区分这个是类型不是函数
 import type { RouteRecordRaw } from 'vue-router';
 import loCache from '@/utils/loCache';
+import { getCurrentFirstMenu } from '@/utils/mapMenus';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -33,6 +34,12 @@ router.beforeEach((to, from) => {
   if (to.path !== '/login') {
     const token = loCache.get('token');
     if (!token) return '/login';
+  }
+  // 自动定位到第一个可跳转菜单（如果有）
+  if (to.path === '/main') {
+    const userMenus = loCache.get('userMenus');
+    const firstMenu = getCurrentFirstMenu(userMenus);
+    if (firstMenu) return firstMenu.url!;
   }
 });
 export default router;
