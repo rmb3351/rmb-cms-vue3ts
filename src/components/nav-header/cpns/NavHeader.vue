@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import NavUserInfo from './NavUserInfo.vue';
+import NavBreadcrumb from './NavBreadcrumb.vue';
 const iconIsFold = ref(true);
 // 使用emit父子组件传值是因为父组件也要用到这个值，且父组件可以直接传给nav-menu
 const emits = defineEmits(['isFoldChange']);
@@ -16,7 +17,7 @@ function handleIconClick() {
       ><Fold v-show="iconIsFold" /><Expand v-show="!iconIsFold"
     /></el-icon>
     <div class="header__content">
-      <span>面包屑导航</span>
+      <NavBreadcrumb></NavBreadcrumb>
       <NavUserInfo class="header-user__info"></NavUserInfo>
     </div>
   </div>

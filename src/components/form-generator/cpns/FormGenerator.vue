@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { PropType } from 'vue';
+import { PropType, ref, watch } from 'vue';
 import type { IFormItem, IColLayout } from '../type';
-defineProps({
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    required: true
+  },
   formItems: {
     type: Array as PropType<IFormItem[]>,
     default: () => []
@@ -27,10 +31,21 @@ defineProps({
     })
   }
 });
+
+const emits = defineEmits(['update:modelValue']);
+
+/* 双向绑定数据管理 */
+const formData = ref({ ...props.modelValue });
+watch(formData, newVal => emits('update:modelValue', newVal), { deep: true });
 </script>
 
 <template>
   <el-form :label-width="labelWidth" class="form__wrapper">
+    <div class="form__header">
+      <slot name="form-header">
+        <h2>高级检索</h2>
+      </slot>
+    </div>
     <el-row>
       <template v-for="item in formItems" :key="item.label">
         <el-col v-bind="colLayout">
@@ -45,6 +60,7 @@ defineProps({
                 v-bind="item.otherOptions"
                 :show-password="item.type === 'password'"
                 :placeholder="item.placeholder"
+                v-model="formData[item.field]"
               ></el-input>
             </template>
             <!-- 下拉选项框 -->
@@ -53,6 +69,7 @@ defineProps({
                 :placeholder="item.placeholder"
                 v-bind="item.otherOptions"
                 style="width: 100%"
+                v-model="formData[item.field]"
               >
                 <el-option
                   v-for="opt in item.options"
@@ -67,17 +84,42 @@ defineProps({
               <el-date-picker
                 v-bind="item.otherOptions"
                 style="width: 100%"
+                v-model="formData[item.field]"
               ></el-date-picker>
             </template>
           </el-form-item>
         </el-col>
       </template>
     </el-row>
+    <div class="form__footer">
+      <slot name="form-footer">
+        <el-button>
+          <el-icon><RefreshRight /></el-icon>
+          重置</el-button
+        >
+        <el-button type="primary">
+          <el-icon><Search /></el-icon>
+          搜索</el-button
+        >
+      </slot>
+    </div>
   </el-form>
 </template>
 
 <style lang="less" scoped>
 .form__wrapper {
   padding-top: 22px;
+  .form__header {
+    margin-bottom: 20px;
+  }
+  .form__footer {
+    text-align: right;
+    padding-right: 40px;
+    padding-bottom: 20px;
+  }
+  .form__header .el-icon,
+  .form__footer .el-icon {
+    margin-right: 10px;
+  }
 }
 </style>

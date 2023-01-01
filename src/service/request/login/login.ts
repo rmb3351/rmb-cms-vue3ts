@@ -1,11 +1,6 @@
 import rmbRequest from '@/service';
-import type {
-  IAccount,
-  ILoginResult,
-  IDataType,
-  IUserInfo,
-  IMenus
-} from './type';
+import type { IAccount, ILoginResult, IUserInfo, IMenus } from './type';
+import type { IDataType } from '../type';
 
 enum LoginAPI {
   AccountLogin = '/login',

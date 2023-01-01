@@ -8,6 +8,7 @@ interface ISelectOptions {
 export interface IFormItem {
   type: IFormType;
   label: string;
+  field: string;
   rules?: any[];
   placeholder?: string;
   // select的子项

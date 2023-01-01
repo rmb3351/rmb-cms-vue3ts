@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 import type { IMenus } from '@/service/request/login/type';
+import type { IBreadcrumbItem } from '@/components/nav-header/type';
 // 这里不要使用useRouter，因为不是在组件内部
 import router from '@/router';
 import loCache from './loCache';
@@ -84,4 +85,34 @@ export function getCurrentMenuId(
     if (menuId) return menuId;
   }
   return '';
+}
+
+/**
+ *
+ * @param routePath 当前路由的路径
+ * @param searchMenus 当前循环查找的菜单数组
+ * @param breadcrumbs 递归传入的当前匹配到的面包屑数组
+ * @returns 当前路由对应的整个面包屑数组
+ */
+export function getCurrentMenuBreadcrumbs(
+  routePath: string,
+  searchMenus: IMenus[],
+  breadcrumbs: IBreadcrumbItem[] = []
+): IBreadcrumbItem[] {
+  /* 找到该层url和routePath对应的菜单 */
+  const currentLevelMenu = searchMenus.find(menu =>
+    routePath.includes(menu.url || 'notUrl')
+  );
+  /* 1.能匹配到当前层级的菜单时，先添加进面包屑数组；
+  2.如果是精确匹配，直接return
+  3.未精确匹配，则根据是否包含children决定是否递归 */
+  if (currentLevelMenu) {
+    breadcrumbs.push({ name: currentLevelMenu.name });
+    if (currentLevelMenu.url === routePath) return breadcrumbs;
+    searchMenus = currentLevelMenu.children;
+    // 往深层递归添加面包屑
+    if (searchMenus)
+      return getCurrentMenuBreadcrumbs(routePath, searchMenus, breadcrumbs);
+  }
+  return breadcrumbs;
 }
