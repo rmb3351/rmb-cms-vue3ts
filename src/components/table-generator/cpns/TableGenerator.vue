@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType } from 'vue';
+import { PropType, ref } from 'vue';
 import type { IPropItem } from '../type';
 
 defineProps({
@@ -10,13 +10,74 @@ defineProps({
   dataSource: {
     type: Array,
     required: true
+  },
+  isShowSelection: {
+    type: Boolean,
+    default: false
+  },
+  isShowIndex: {
+    type: Boolean,
+    default: false
+  },
+  tableTitle: {
+    type: String,
+    default: ''
   }
 });
+
+/* 选项改变时提交table数据 */
+const emits = defineEmits(['tableSelectionChannge']);
+function handleSelectionChange(values: any[]) {
+  // 交由父组件监听tableSelectionChannge处理
+  emits('tableSelectionChannge', values);
+}
+
+/* 表尾默认分页器相关属性和方法 */
+const currentPage = ref(4);
+const pageSize = ref(100);
+const small = ref(false);
+const background = ref(false);
+const disabled = ref(false);
+
+const handleSizeChange = (val: number) => {
+  console.log(`${val} items per page`);
+};
+const handleCurrentChange = (val: number) => {
+  console.log(`current page: ${val}`);
+};
 </script>
 
 <template>
   <div class="TableGenerator__wrapper">
-    <el-table :data="dataSource" border style="width: 100%">
+    <!-- 表头插槽 -->
+    <div class="table__header">
+      <slot name="tableHeader">
+        <span class="header__title">{{ tableTitle }}</span>
+        <div class="header__actions">
+          <slot name="headerActions"></slot>
+        </div>
+      </slot>
+    </div>
+    <!-- 表格内容 -->
+    <el-table
+      :data="dataSource"
+      border
+      style="width: 100%"
+      @selectionChange="handleSelectionChange"
+    >
+      <el-table-column
+        v-if="isShowSelection"
+        type="selection"
+        align="center"
+        width="60"
+      ></el-table-column>
+      <el-table-column
+        v-if="isShowIndex"
+        type="index"
+        width="80"
+        align="center"
+        label="序号"
+      ></el-table-column>
       <el-table-column
         v-for="propItem in propList"
         :key="propItem.prop"
@@ -31,7 +92,42 @@ defineProps({
         </template>
       </el-table-column>
     </el-table>
+    <!-- 表尾插槽 -->
+    <div class="table__footer">
+      <slot name="tableFooter">
+        <el-pagination
+          v-model:currentPage="currentPage"
+          v-model:pageSize="pageSize"
+          :page-sizes="[100, 200, 300, 400]"
+          :small="small"
+          :disabled="disabled"
+          :background="background"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </slot>
+    </div>
   </div>
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.table__header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin-bottom: 15px;
+  .header__title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+.table__footer {
+  margin-top: 15px;
+  padding: 0 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

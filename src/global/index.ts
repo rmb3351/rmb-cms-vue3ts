@@ -4,7 +4,6 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import { globalFormatter } from './formatter';
 
 /**
- *
  * @param app createApp函数返回值
  * @description 用于全局注册组件等的封装函数
  */

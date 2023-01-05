@@ -1,5 +1,5 @@
 import type { IFormConfig } from '@/components/form-generator/type';
-import type { IPropItem } from '@/components/table-generator/type';
+import type { ITableConfig } from '@/components/table-generator/type';
 
 /* FormGenerator的配置项 */
 const userFormConfig: IFormConfig = {
@@ -60,39 +60,51 @@ userFormConfig.formItems?.forEach(item => {
 });
 
 /* TableGenerator的配置项 */
-const propList: IPropItem[] = [
-  {
-    prop: 'name',
-    'min-width': '100',
-    label: '用户名'
-  },
-  {
-    prop: 'realname',
-    'min-width': '100',
-    label: '真名'
-  },
-  {
-    prop: 'cellphone',
-    'min-width': '100',
-    label: '手机号'
-  },
-  {
-    prop: 'enable',
-    'min-width': '100',
-    label: '用户状态',
-    slotName: 'status'
-  },
-  {
-    prop: 'createAt',
-    'min-width': '100',
-    label: '创建时间',
-    slotName: 'createAt'
-  },
-  {
-    prop: 'updateAt',
-    'min-width': '100',
-    label: '更新时间',
-    slotName: 'updateAt'
-  }
-];
-export { userFormConfig, formDataFields, propList };
+const userTableConfig: ITableConfig = {
+  propList: [
+    {
+      prop: 'name',
+      'min-width': '100',
+      label: '用户名'
+    },
+    {
+      prop: 'realname',
+      'min-width': '100',
+      label: '真名'
+    },
+    {
+      prop: 'cellphone',
+      'min-width': '100',
+      label: '手机号'
+    },
+    {
+      prop: 'enable',
+      'min-width': '100',
+      label: '用户状态',
+      slotName: 'status'
+    },
+    {
+      prop: 'createAt',
+      'min-width': '100',
+      label: '创建时间',
+      slotName: 'createAt'
+    },
+    {
+      prop: 'updateAt',
+      'min-width': '100',
+      label: '更新时间',
+      slotName: 'updateAt'
+    },
+    {
+      prop: 'actions',
+      label: '操作',
+      'min-width': '90',
+      slotName: 'actions'
+    }
+  ],
+  isShowSelection: true,
+  isShowIndex: true,
+  tableTitle: '用户列表'
+};
+
+export { userFormConfig, formDataFields, userTableConfig };

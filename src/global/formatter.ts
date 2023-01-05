@@ -3,7 +3,6 @@ import type { App } from 'vue';
 import { formatUtcString } from '@/utils/timeFormat';
 
 /**
- *
  * @param app createApp函数返回值
  * @description 用于全局注册格式化方法对象$formatter的封装函数
  */
