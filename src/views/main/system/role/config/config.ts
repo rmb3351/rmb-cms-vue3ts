@@ -27,15 +27,15 @@ const roleFormConfig: IFormConfig = {
       }
     }
   ],
-  formDataFields: {}
+  formDataRaws: {}
 };
 
 /* 从FormGenerator的配置项中抽取字段名生成对象 */
-const formDataFields: any = {};
+const formDataRaws: any = {};
 roleFormConfig.formItems?.forEach(item => {
-  formDataFields[item.field] = item.type === 'datepicker' ? ['', ''] : '';
+  formDataRaws[item.field] = item.type === 'datepicker' ? ['', ''] : '';
 });
-roleFormConfig.formDataFields = formDataFields;
+roleFormConfig.formDataRaws = formDataRaws;
 
 /* TableGenerator的配置项 */
 const roleTableConfig: ITableConfig = {
@@ -74,4 +74,4 @@ const roleTableConfig: ITableConfig = {
   tableTitle: '角色列表'
 };
 
-export { roleFormConfig, formDataFields, roleTableConfig };
+export { roleFormConfig, formDataRaws, roleTableConfig };

@@ -22,29 +22,26 @@ defineProps({
   tableTitle: {
     type: String,
     default: ''
+  },
+  totalCount: {
+    type: Number,
+    required: true
   }
 });
 
 /* 选项改变时提交table数据 */
-const emits = defineEmits(['tableSelectionChannge']);
+const emits = defineEmits(['tableSelectionChannge', 'paginationChange']);
 function handleSelectionChange(values: any[]) {
   // 交由父组件监听tableSelectionChannge处理
   emits('tableSelectionChannge', values);
 }
 
 /* 表尾默认分页器相关属性和方法 */
-const currentPage = ref(4);
-const pageSize = ref(100);
-const small = ref(false);
-const background = ref(false);
-const disabled = ref(false);
+const pagination = ref({ currentPage: 1, pageSize: 10 });
 
-const handleSizeChange = (val: number) => {
-  console.log(`${val} items per page`);
-};
-const handleCurrentChange = (val: number) => {
-  console.log(`current page: ${val}`);
-};
+function handlePaginationChange() {
+  emits('paginationChange', pagination.value);
+}
 </script>
 
 <template>
@@ -96,16 +93,13 @@ const handleCurrentChange = (val: number) => {
     <div class="table__footer">
       <slot name="tableFooter">
         <el-pagination
-          v-model:currentPage="currentPage"
-          v-model:pageSize="pageSize"
-          :page-sizes="[100, 200, 300, 400]"
-          :small="small"
-          :disabled="disabled"
-          :background="background"
+          v-model:currentPage="pagination.currentPage"
+          v-model:pageSize="pagination.pageSize"
+          :page-sizes="[10, 20, 30]"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          :total="totalCount"
+          @size-change="handlePaginationChange"
+          @current-change="handlePaginationChange"
         />
       </slot>
     </div>

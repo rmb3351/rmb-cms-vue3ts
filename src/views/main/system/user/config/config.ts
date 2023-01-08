@@ -51,16 +51,16 @@ const userFormConfig: IFormConfig = {
     }
   ],
   // 由于是必传属性，先放个空对象占位
-  formDataFields: {}
+  formDataRaws: {}
 };
 
 /* 从FormGenerator的配置项中抽取字段名生成对象 */
-const formDataFields: any = {};
+const formDataRaws: any = {};
 userFormConfig.formItems?.forEach(item => {
-  formDataFields[item.field] = item.type === 'datepicker' ? ['', ''] : '';
+  formDataRaws[item.field] = item.type === 'datepicker' ? ['', ''] : '';
 });
 // 初始值对象放入formConfig替换空对象（因为必传），FormGenerator重置时用得上
-userFormConfig.formDataFields = formDataFields;
+userFormConfig.formDataRaws = formDataRaws;
 
 /* TableGenerator的配置项 */
 const userTableConfig: ITableConfig = {
@@ -111,4 +111,4 @@ const userTableConfig: ITableConfig = {
 };
 
 // 初始值对象也单独导出，给具体的FormGenerator父组件使用
-export { userFormConfig, formDataFields, userTableConfig };
+export { userFormConfig, formDataRaws, userTableConfig };

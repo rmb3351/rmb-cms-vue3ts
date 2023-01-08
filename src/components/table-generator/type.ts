@@ -14,3 +14,8 @@ export interface ITableConfig {
   isShowIndex?: boolean;
   tableTitle?: string;
 }
+
+export interface IPagination {
+  currentPage: number;
+  pageSize: number;
+}

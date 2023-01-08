@@ -8,9 +8,19 @@ interface ISystemParams {
 
 export interface IUserParams extends ISystemParams {
   name?: string;
+  realname?: string;
+  cellphone?: string;
+  enable?: string;
+  createAt?: string;
+  updateAt?: string;
 }
 
-export interface IRoleParams extends ISystemParams {}
+export interface IRoleParams extends ISystemParams {
+  name?: string;
+  intro?: string;
+  createAt?: string;
+  updateAt?: string;
+}
 
 /* 对系统管理子页面的结果做抽取 */
 interface ISystemListsResult {

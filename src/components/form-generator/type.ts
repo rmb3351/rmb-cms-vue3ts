@@ -36,5 +36,5 @@ export interface IFormConfig {
   itemStyle?: any;
   colLayout?: IColLayout;
   // 表单每个框的初始值必传，在重置时用得上
-  formDataFields: any;
+  formDataRaws: any;
 }

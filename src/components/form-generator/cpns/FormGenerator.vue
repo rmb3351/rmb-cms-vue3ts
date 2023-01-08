@@ -30,20 +30,36 @@ const props = defineProps({
       xl: 6
     })
   },
-  formDataFields: {
+  formDataRaws: {
     type: Object,
     required: true
   }
 });
 
-const emits = defineEmits(['update:modelValue']);
+const emits = defineEmits(['update:modelValue', 'resetTable', 'searchTable']);
 
 /* 双向绑定数据管理 */
 const formData = ref({ ...props.modelValue });
 watch(formData, newVal => emits('update:modelValue', newVal), { deep: true });
 
+/* 重置和搜索功能 */
 function resetFields() {
-  formData.value = { ...props.formDataFields };
+  formData.value = { ...props.formDataRaws };
+  emits('resetTable');
+}
+
+function searchByFormData() {
+  const queryInfo: any = { offset: 0, size: 10 };
+  const formValue = formData.value;
+  /* 拼接参数，有时间段数组则拆 */
+  for (const key in formValue) {
+    if (key === 'times') {
+      const [createAt, updateAt] = formValue[key];
+      queryInfo.createAt = createAt;
+      queryInfo.updateAt = updateAt;
+    } else queryInfo[key] = formValue[key];
+  }
+  emits('searchTable', { ...queryInfo });
 }
 </script>
 
@@ -105,7 +121,7 @@ function resetFields() {
           <el-icon><RefreshRight /></el-icon>
           重置</el-button
         >
-        <el-button type="primary">
+        <el-button type="primary" @click="searchByFormData">
           <el-icon><Search /></el-icon>
           搜索</el-button
         >

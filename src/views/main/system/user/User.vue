@@ -3,30 +3,44 @@
 import { ref } from 'vue';
 import FormGenerator from '@/components/form-generator';
 import TableGenerator from '@/components/table-generator';
-import {
-  userFormConfig,
-  formDataFields,
-  userTableConfig
-} from './config/config';
+import type { IPagination } from '@/components/table-generator/type';
+import { userFormConfig, formDataRaws, userTableConfig } from './config/config';
 import useSystem from '@/store/system/system';
 
-const userFormData = ref(formDataFields);
+const userFormData = ref(formDataRaws);
 
 /* 获取用户数据 */
 const systemStore = useSystem();
-if (!systemStore.userLists.length) {
-  systemStore.userManagementAction({ offset: 0, size: 10 });
+function getPageData(queryInfo: any = { offset: 0, size: 10 }) {
+  systemStore.userManagementAction(queryInfo);
+}
+getPageData();
+
+function searchTable(searchFormData: any) {
+  getPageData(searchFormData);
+}
+
+/* todo：重新搜索数据且还需要联合当前的queryInfo */
+function getNewPageData(pagination: IPagination) {
+  const { currentPage, pageSize } = pagination;
 }
 </script>
 
 <template>
   <div class="User__wrapper">
-    <FormGenerator v-bind="userFormConfig" v-model="userFormData">
+    <FormGenerator
+      v-bind="userFormConfig"
+      v-model="userFormData"
+      @resetTable="getPageData"
+      @searchTable="searchTable"
+    >
     </FormGenerator>
     <div class="user__table">
       <TableGenerator
         :dataSource="systemStore.userLists"
         v-bind="userTableConfig"
+        :totalCount="systemStore.userCount"
+        @paginationChange="getNewPageData"
       >
         <!-- 定制化插槽的使用 -->
         <template #status="scope">
