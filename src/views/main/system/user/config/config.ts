@@ -8,49 +8,50 @@ const userFormConfig: IFormConfig = {
       type: 'input',
       label: '用户名',
       placeholder: '请输入用户名',
-      field: 'userName'
+      field: 'name'
     },
     {
-      type: 'password',
-      label: '密码',
-      placeholder: '请输入密码',
-      field: 'password'
+      type: 'input',
+      label: '真名',
+      placeholder: '请输入真名',
+      field: 'realname'
+    },
+    {
+      type: 'input',
+      label: '手机号',
+      placeholder: '请输入手机号',
+      field: 'cellphone'
     },
     {
       type: 'select',
-      label: '爱好',
-      placeholder: '请选择爱好',
-      field: 'hobby',
+      label: '用户状态',
+      placeholder: '请选择用户状态',
+      field: 'enable',
       options: [
         {
-          value: 'sing',
-          label: '唱'
+          value: 1,
+          label: '在用'
         },
         {
-          value: 'dance',
-          label: '跳'
-        },
-        {
-          value: 'rap',
-          label: 'Rap'
-        },
-        {
-          value: 'basketball',
-          label: '篮球'
+          value: 0,
+          label: '弃用'
         }
       ]
     },
+
     {
       type: 'datepicker',
-      label: '表演时间',
+      label: '时间范围',
       field: 'times',
       otherOptions: {
-        startPlaceholder: '开始时间',
-        endPlaceholder: '结束时间',
+        startPlaceholder: '创建时间',
+        endPlaceholder: '更新时间',
         type: 'daterange'
       }
     }
-  ]
+  ],
+  // 由于是必传属性，先放个空对象占位
+  formDataFields: {}
 };
 
 /* 从FormGenerator的配置项中抽取字段名生成对象 */
@@ -58,6 +59,8 @@ const formDataFields: any = {};
 userFormConfig.formItems?.forEach(item => {
   formDataFields[item.field] = item.type === 'datepicker' ? ['', ''] : '';
 });
+// 初始值对象放入formConfig替换空对象（因为必传），FormGenerator重置时用得上
+userFormConfig.formDataFields = formDataFields;
 
 /* TableGenerator的配置项 */
 const userTableConfig: ITableConfig = {
@@ -107,4 +110,5 @@ const userTableConfig: ITableConfig = {
   tableTitle: '用户列表'
 };
 
+// 初始值对象也单独导出，给具体的FormGenerator父组件使用
 export { userFormConfig, formDataFields, userTableConfig };

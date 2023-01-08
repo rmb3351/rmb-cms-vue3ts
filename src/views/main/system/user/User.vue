@@ -14,10 +14,9 @@ const userFormData = ref(formDataFields);
 
 /* 获取用户数据 */
 const systemStore = useSystem();
-systemStore.userManagementAction({
-  offset: 0,
-  size: 10
-});
+if (!systemStore.userLists.length) {
+  systemStore.userManagementAction({ offset: 0, size: 10 });
+}
 </script>
 
 <template>

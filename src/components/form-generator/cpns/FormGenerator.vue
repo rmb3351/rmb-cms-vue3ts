@@ -29,6 +29,10 @@ const props = defineProps({
       lg: 8,
       xl: 6
     })
+  },
+  formDataFields: {
+    type: Object,
+    required: true
   }
 });
 
@@ -37,6 +41,10 @@ const emits = defineEmits(['update:modelValue']);
 /* 双向绑定数据管理 */
 const formData = ref({ ...props.modelValue });
 watch(formData, newVal => emits('update:modelValue', newVal), { deep: true });
+
+function resetFields() {
+  formData.value = { ...props.formDataFields };
+}
 </script>
 
 <template>
@@ -93,7 +101,7 @@ watch(formData, newVal => emits('update:modelValue', newVal), { deep: true });
     </el-row>
     <div class="form__footer">
       <slot name="form-footer">
-        <el-button>
+        <el-button @click="resetFields">
           <el-icon><RefreshRight /></el-icon>
           重置</el-button
         >
