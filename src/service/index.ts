@@ -20,19 +20,17 @@ const rmbRequest = new RMBRequest({
 export default rmbRequest;
 
 /* 用法如下
-interface DataType {
-  data: any;
-  returnCode: string;
-  success: boolean;
-  _id?: string;
+enum LoginAPI {
+  AccountLogin = '/login',
+  LoginUserInfo = '/users/',
+  UserMenus = '/role/'
 }
 
-rmbRequest
-  .get<DataType>({
-    url: '/home/multidata',
-    showLoading: false
-  })
-  .then(res => {
-    console.log(res);
+export function accountLoginRequest(account: IAccount) {
+  // post可以传泛型定义返回数据类型，IDataType又可以传泛型定义它的data属性的类型
+  return rmbRequest.post<IDataType<ILoginResult>>({
+    url: LoginAPI.AccountLogin,
+    data: account
   });
+}
 */

@@ -49,7 +49,7 @@ function resetFields() {
 }
 
 function searchByFormData() {
-  const queryInfo: any = { offset: 0, size: 10 };
+  const queryInfo: any = {};
   const formValue = formData.value;
   /* 拼接参数，有时间段数组则拆 */
   for (const key in formValue) {

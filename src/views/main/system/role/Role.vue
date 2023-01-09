@@ -5,17 +5,14 @@ import FormGenerator from '@/components/form-generator';
 import TableGenerator from '@/components/table-generator';
 import { roleFormConfig, formDataRaws, roleTableConfig } from './config/config';
 import useSystem from '@/store/system/system';
+import useGetPageData from '@/hooks/useGetPageData';
 const roleFormData = ref(formDataRaws);
-
 const systemStore = useSystem();
-function getPageData(queryInfo: any = { offset: 0, size: 10 }) {
-  systemStore.roleManagementAction(queryInfo);
-}
-getPageData();
 
-function searchTable(searchFormData: any) {
-  getPageData(searchFormData);
-}
+const { tableGenRef, getPageData, resetTable, searchTable, getNewPageData } =
+  useGetPageData(systemStore.roleManagementAction);
+
+getPageData();
 </script>
 
 <template>
@@ -23,15 +20,17 @@ function searchTable(searchFormData: any) {
     <FormGenerator
       v-bind="roleFormConfig"
       v-model="roleFormData"
-      @resetTable="getPageData"
+      @resetTable="resetTable"
       @searchTable="searchTable"
     >
     </FormGenerator>
     <div class="role__table">
       <TableGenerator
+        ref="tableGenRef"
         :dataSource="systemStore.roleLists"
         v-bind="roleTableConfig"
         :totalCount="systemStore.roleCount"
+        @paginationChange="getNewPageData"
       >
         <!-- 定制化插槽的使用 -->
         <template #createAt="scope">

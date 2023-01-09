@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { PropType, ref } from 'vue';
 import type { IPropItem } from '../type';
+import { INIT_PAGESIZE } from '../constants';
 
 defineProps({
   propList: {
@@ -30,18 +31,24 @@ defineProps({
 });
 
 /* 选项改变时提交table数据 */
-const emits = defineEmits(['tableSelectionChannge', 'paginationChange']);
+const emits = defineEmits(['tableSelectionChange', 'paginationChange']);
 function handleSelectionChange(values: any[]) {
   // 交由父组件监听tableSelectionChannge处理
-  emits('tableSelectionChannge', values);
+  emits('tableSelectionChange', values);
 }
 
 /* 表尾默认分页器相关属性和方法 */
-const pagination = ref({ currentPage: 1, pageSize: 10 });
+const pagination = ref({ currentPage: 1, pageSize: INIT_PAGESIZE });
 
 function handlePaginationChange() {
   emits('paginationChange', pagination.value);
 }
+
+/* 供父组件中的FormGenerator重置分页器页码的方法 */
+function resetCurrentPage() {
+  pagination.value.currentPage = 1;
+}
+defineExpose({ resetCurrentPage });
 </script>
 
 <template>

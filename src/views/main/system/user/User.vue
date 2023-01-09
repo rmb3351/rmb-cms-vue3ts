@@ -3,27 +3,17 @@
 import { ref } from 'vue';
 import FormGenerator from '@/components/form-generator';
 import TableGenerator from '@/components/table-generator';
-import type { IPagination } from '@/components/table-generator/type';
 import { userFormConfig, formDataRaws, userTableConfig } from './config/config';
 import useSystem from '@/store/system/system';
+import useGetPageData from '@/hooks/useGetPageData';
 
 const userFormData = ref(formDataRaws);
-
 /* 获取用户数据 */
 const systemStore = useSystem();
-function getPageData(queryInfo: any = { offset: 0, size: 10 }) {
-  systemStore.userManagementAction(queryInfo);
-}
+const { tableGenRef, getPageData, resetTable, searchTable, getNewPageData } =
+  useGetPageData(systemStore.userManagementAction);
+
 getPageData();
-
-function searchTable(searchFormData: any) {
-  getPageData(searchFormData);
-}
-
-/* todo：重新搜索数据且还需要联合当前的queryInfo */
-function getNewPageData(pagination: IPagination) {
-  const { currentPage, pageSize } = pagination;
-}
 </script>
 
 <template>
@@ -31,12 +21,13 @@ function getNewPageData(pagination: IPagination) {
     <FormGenerator
       v-bind="userFormConfig"
       v-model="userFormData"
-      @resetTable="getPageData"
+      @resetTable="resetTable"
       @searchTable="searchTable"
     >
     </FormGenerator>
     <div class="user__table">
       <TableGenerator
+        ref="tableGenRef"
         :dataSource="systemStore.userLists"
         v-bind="userTableConfig"
         :totalCount="systemStore.userCount"
