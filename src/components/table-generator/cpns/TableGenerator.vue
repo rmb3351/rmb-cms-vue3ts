@@ -2,6 +2,7 @@
 import { PropType, ref } from 'vue';
 import type { IPropItem } from '../type';
 import { INIT_PAGESIZE } from '../constants';
+import TableCommonCol from './TableCommonCol.vue';
 
 defineProps({
   propList: {
@@ -27,6 +28,10 @@ defineProps({
   totalCount: {
     type: Number,
     required: true
+  },
+  showCommonCol: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -90,11 +95,17 @@ defineExpose({ resetCurrentPage });
       >
         <template #default="scope">
           <!-- 定制化插槽：在default插槽内放置动态具名插槽，插槽名由使用的组件传入，插槽内容默认放置源数据，再将通过el-table-column作用域插槽获取的数据通过作用域插槽机制反向暴露给使用的组件 -->
-          <slot :name="propItem.slotName" :row="scope.row">
+          <slot
+            v-if="propItem.slotName"
+            :name="propItem.slotName"
+            :row="scope.row"
+          >
             {{ scope.row[propItem.prop] }}
           </slot>
         </template>
       </el-table-column>
+      <!-- 写死公共列 -->
+      <TableCommonCol v-if="showCommonCol"> </TableCommonCol>
     </el-table>
     <!-- 表尾插槽 -->
     <div class="table__footer">

@@ -32,27 +32,6 @@ getPageData();
         :totalCount="systemStore.roleCount"
         @paginationChange="getNewPageData"
       >
-        <!-- 定制化插槽的使用 -->
-        <template #createAt="scope">
-          <span>{{ $formatter.formatUtcString(scope.row.createAt) }}</span>
-        </template>
-        <template #updateAt="scope">
-          <span>{{ $formatter.formatUtcString(scope.row.updateAt) }}</span>
-        </template>
-        <template #actions>
-          <el-button type="primary">
-            <el-icon>
-              <Edit />
-            </el-icon>
-            编辑</el-button
-          >
-          <el-button type="danger">
-            <el-icon>
-              <Delete />
-            </el-icon>
-            删除</el-button
-          >
-        </template>
         <!-- 以下是TableGenerator自带的插槽 -->
         <template #headerActions>
           <el-button type="primary">新增角色</el-button>

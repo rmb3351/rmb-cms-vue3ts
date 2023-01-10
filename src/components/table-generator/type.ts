@@ -4,8 +4,8 @@ export interface IPropItem {
   label: string;
   'min-width'?: string | number;
   width?: string | number;
-  slotName?: string;
   align?: string;
+  slotName?: string;
 }
 
 export interface ITableConfig {
@@ -13,6 +13,7 @@ export interface ITableConfig {
   isShowSelection?: boolean;
   isShowIndex?: boolean;
   tableTitle?: string;
+  showCommonCol?: boolean;
 }
 
 export interface IPagination {

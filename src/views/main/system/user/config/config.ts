@@ -85,29 +85,12 @@ const userTableConfig: ITableConfig = {
       'min-width': '100',
       label: '用户状态',
       slotName: 'status'
-    },
-    {
-      prop: 'createAt',
-      'min-width': '100',
-      label: '创建时间',
-      slotName: 'createAt'
-    },
-    {
-      prop: 'updateAt',
-      'min-width': '100',
-      label: '更新时间',
-      slotName: 'updateAt'
-    },
-    {
-      prop: 'actions',
-      label: '操作',
-      'min-width': '90',
-      slotName: 'actions'
     }
   ],
   isShowSelection: true,
   isShowIndex: true,
-  tableTitle: '用户列表'
+  tableTitle: '用户列表',
+  showCommonCol: true
 };
 
 // 初始值对象也单独导出，给具体的FormGenerator父组件使用

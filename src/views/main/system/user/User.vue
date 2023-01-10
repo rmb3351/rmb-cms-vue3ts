@@ -37,26 +37,6 @@ getPageData();
         <template #status="scope">
           <span>{{ scope.row.enable === 1 ? '在用' : '弃用' }}</span>
         </template>
-        <template #createAt="scope">
-          <span>{{ $formatter.formatUtcString(scope.row.createAt) }}</span>
-        </template>
-        <template #updateAt="scope">
-          <span>{{ $formatter.formatUtcString(scope.row.updateAt) }}</span>
-        </template>
-        <template #actions>
-          <el-button type="primary">
-            <el-icon>
-              <Edit />
-            </el-icon>
-            编辑</el-button
-          >
-          <el-button type="danger">
-            <el-icon>
-              <Delete />
-            </el-icon>
-            删除</el-button
-          >
-        </template>
         <!-- 以下是TableGenerator自带的插槽 -->
         <template #headerActions>
           <el-button type="primary">新增用户</el-button>

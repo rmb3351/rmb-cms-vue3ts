@@ -49,29 +49,12 @@ const roleTableConfig: ITableConfig = {
       prop: 'intro',
       'min-width': '100',
       label: '权限'
-    },
-    {
-      prop: 'createAt',
-      'min-width': '100',
-      label: '创建时间',
-      slotName: 'createAt'
-    },
-    {
-      prop: 'updateAt',
-      'min-width': '100',
-      label: '更新时间',
-      slotName: 'updateAt'
-    },
-    {
-      prop: 'actions',
-      label: '操作',
-      'min-width': '90',
-      slotName: 'actions'
     }
   ],
   isShowSelection: true,
   isShowIndex: true,
-  tableTitle: '角色列表'
+  tableTitle: '角色列表',
+  showCommonCol: true
 };
 
 export { roleFormConfig, formDataRaws, roleTableConfig };
