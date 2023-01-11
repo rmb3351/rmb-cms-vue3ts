@@ -1,12 +1,8 @@
 // IMenuList用到的菜单接口
 import type { IMenus } from '../login/type';
-/* 对系统管理子页面的请求参数做抽取 */
-interface ISystemParams {
-  offset: number;
-  size: number;
-}
-
-export interface IUserParams extends ISystemParams {
+import type { IListParams, IListsResult } from '../type';
+/* 系统管理子页面的请求参数类型 */
+export interface IUserParams extends IListParams {
   name?: string;
   realname?: string;
   cellphone?: string;
@@ -15,19 +11,15 @@ export interface IUserParams extends ISystemParams {
   updateAt?: string;
 }
 
-export interface IRoleParams extends ISystemParams {
+export interface IRoleParams extends IListParams {
   name?: string;
   intro?: string;
   createAt?: string;
   updateAt?: string;
 }
 
-/* 对系统管理子页面的结果做抽取 */
-interface ISystemListsResult {
-  list: any[];
-  totalCount: number;
-}
-export interface IUserListsResult extends ISystemListsResult {
+/* 系统管理子页面的结果参数类型 */
+export interface IUserListsResult extends IListsResult {
   list: IUserListItem[];
 }
 
@@ -43,7 +35,7 @@ export interface IUserListItem {
   updateAt: string;
 }
 
-export interface IRoleListsResult extends ISystemListsResult {
+export interface IRoleListsResult extends IListsResult {
   list: IRoleListItem[];
 }
 

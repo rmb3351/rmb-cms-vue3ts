@@ -20,3 +20,14 @@ export interface IDataType<T = any> {
   code: number;
   data: T;
 }
+
+/* 对于系统内的list的请求参数和结果类型的抽取 */
+export interface IListParams {
+  offset: number;
+  size: number;
+}
+
+export interface IListsResult {
+  list: any[];
+  totalCount: number;
+}
