@@ -1,5 +1,6 @@
 import type { IFormConfig } from '@/components/form-generator/type';
 import type { ITableConfig } from '@/components/table-generator/type';
+import type { IListPageConfig } from '@/components/list-page-generator/type';
 
 /* FormGenerator的配置项 */
 const roleFormConfig: IFormConfig = {
@@ -53,8 +54,14 @@ const roleTableConfig: ITableConfig = {
   ],
   isShowSelection: true,
   isShowIndex: true,
-  tableTitle: '角色列表',
+  tableTitle: '角色',
   showCommonCol: true
 };
 
-export { roleFormConfig, formDataRaws, roleTableConfig };
+const listPageConfig: IListPageConfig = {
+  formConfig: roleFormConfig,
+  dataRaws: formDataRaws,
+  tableConfig: roleTableConfig
+};
+
+export { listPageConfig };

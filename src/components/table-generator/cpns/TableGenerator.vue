@@ -61,7 +61,7 @@ defineExpose({ resetCurrentPage });
     <!-- 表头插槽 -->
     <div class="table__header">
       <slot name="tableHeader">
-        <span class="header__title">{{ tableTitle }}</span>
+        <span class="header__title">{{ tableTitle }}列表</span>
         <div class="header__actions">
           <slot name="headerActions"></slot>
         </div>

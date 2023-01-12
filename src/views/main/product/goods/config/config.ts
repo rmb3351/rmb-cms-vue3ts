@@ -79,7 +79,7 @@ const goodTableConfig: ITableConfig = {
   ],
   isShowSelection: true,
   isShowIndex: true,
-  tableTitle: '商品列表',
+  tableTitle: '商品',
   showCommonCol: true
 };
 

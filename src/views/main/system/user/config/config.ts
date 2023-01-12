@@ -89,7 +89,7 @@ const userTableConfig: ITableConfig = {
   ],
   isShowSelection: true,
   isShowIndex: true,
-  tableTitle: '用户列表',
+  tableTitle: '用户',
   showCommonCol: true
 };
 

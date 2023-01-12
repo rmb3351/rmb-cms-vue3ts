@@ -44,6 +44,9 @@ getPageData();
             :src="scope.row.imgUrl"
             :zoom-rate="1.2"
             :preview-src-list="[scope.row.imgUrl]"
+            hide-on-click-modal
+            close-on-press-escape
+            preview-teleported
           ></el-image>
         </template>
         <!-- 以下是TableGenerator自带的插槽 -->
