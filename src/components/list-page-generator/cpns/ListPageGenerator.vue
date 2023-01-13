@@ -1,6 +1,5 @@
-<!-- 角色管理页面 -->
 <script setup lang="ts">
-import { ref, PropType, useSlots } from 'vue';
+import { ref, PropType, computed } from 'vue';
 import FormGenerator from '@/components/form-generator';
 import TableGenerator from '@/components/table-generator';
 import useGetPageData from '@/hooks/useGetPageData';
@@ -26,14 +25,20 @@ const props = defineProps({
   }
 });
 
+/* 从config里筛出slotNames作为数组，不用useSlots是怕下面动态渲染的插槽和写死的冲突
+map内的slotName是必有的，不加非空断言下面动态插槽名就不让用了 */
+const slotNames = computed(() => {
+  return props.listPageConfig.tableConfig.propList
+    .filter(({ slotName }) => !!slotName)
+    .map(({ slotName }) => slotName!);
+});
+
 const pageFormData = ref(props.listPageConfig.dataRaws);
 
 const { tableGenRef, getPageData, resetTable, searchTable, getNewPageData } =
   useGetPageData(props.getDataFn);
 
 getPageData();
-
-const slots = useSlots();
 </script>
 
 <template>
@@ -56,6 +61,14 @@ const slots = useSlots();
           :totalCount="totalCount"
           @paginationChange="getNewPageData"
         >
+          <!-- 占位子组件的具名插槽，拿数据，然后留具名插槽给父组件，传数据，实现隔层传递 -->
+          <template
+            v-for="(slotName, index) in slotNames"
+            :key="slotName + index"
+            #[slotName]="scope"
+          >
+            <slot :name="slotName" :row="scope.row"></slot>
+          </template>
           <!-- 以下是TableGenerator自带的插槽 -->
           <template #headerActions>
             <el-button type="primary"

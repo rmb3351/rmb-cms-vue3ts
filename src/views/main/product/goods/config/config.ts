@@ -1,5 +1,6 @@
 import type { IFormConfig } from '@/components/form-generator/type';
 import type { ITableConfig } from '@/components/table-generator/type';
+import type { IListPageConfig } from '@/components/list-page-generator/type';
 
 /* FormGenerator的配置项 */
 const goodFormConfig: IFormConfig = {
@@ -83,4 +84,10 @@ const goodTableConfig: ITableConfig = {
   showCommonCol: true
 };
 
-export { goodFormConfig, formDataRaws, goodTableConfig };
+const listPageConfig: IListPageConfig = {
+  formConfig: goodFormConfig,
+  dataRaws: formDataRaws,
+  tableConfig: goodTableConfig
+};
+
+export { listPageConfig };

@@ -3,7 +3,6 @@
 import ListPageGenerator from '@/components/list-page-generator';
 import { listPageConfig } from './config/config';
 import useSystem from '@/store/system/system';
-import useGetPageData from '@/hooks/useGetPageData';
 const systemStore = useSystem();
 </script>
 
