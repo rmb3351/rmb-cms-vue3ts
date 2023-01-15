@@ -6,7 +6,6 @@ import useSystem from '@/store/system/system';
 
 /* 获取用户数据 */
 const systemStore = useSystem();
-const attrName = 'systemStore.userManagementAction';
 </script>
 
 <template>

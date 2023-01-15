@@ -54,6 +54,25 @@ export function mapMenusToRoutes(userMenus: IMenus[]): RouteRecordRaw[] {
 
 /**
  *
+ * @param userMenus 当前用户返回的菜单
+ * @returns 用户权限数组
+ */
+export function mapMenuToPermissions(userMenus: IMenus[]) {
+  const permissions: string[] = [];
+
+  function getPermissions(menus: IMenus[]) {
+    for (const menu of menus) {
+      if (menu.type !== 3) getPermissions(menu.children ?? []);
+      else permissions.push(menu.permission!);
+    }
+  }
+
+  getPermissions(userMenus);
+  return permissions;
+}
+
+/**
+ *
  * @param userMenus 用户角色匹配的菜单
  * @returns 匹配到的第一个可跳转菜单或undefined
  */

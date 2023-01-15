@@ -48,6 +48,7 @@ export interface IRoleListItem {
   menuList: IMenuList[];
 }
 
+/* 角色管理里用到的menu接口 */
 interface IMenuList {
   id: number;
   name: string;
@@ -56,4 +57,14 @@ interface IMenuList {
   icon: string;
   sort: number;
   children: IMenus[];
+}
+
+/* 菜单管理里用到的menu接口 */
+export interface IMenuListsResult {
+  list: IMenuListItem[];
+}
+
+export interface IMenuListItem extends IMenus {
+  createAt: string;
+  updateAt: string;
 }

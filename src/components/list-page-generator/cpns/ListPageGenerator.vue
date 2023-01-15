@@ -3,6 +3,7 @@ import { ref, PropType, computed } from 'vue';
 import FormGenerator from '@/components/form-generator';
 import TableGenerator from '@/components/table-generator';
 import useGetPageData from '@/hooks/useGetPageData';
+import usePermission from '@/hooks/usePermission';
 import { IListPageConfig } from '../type';
 const props = defineProps({
   /* table和form的config以及初始数据dataRaws */
@@ -17,7 +18,7 @@ const props = defineProps({
   },
   totalCount: {
     type: Number,
-    required: true
+    default: 0
   },
   dataSource: {
     type: Array,
@@ -35,10 +36,22 @@ const slotNames = computed(() => {
 
 const pageFormData = ref(props.listPageConfig.dataRaws);
 
-const { tableGenRef, getPageData, resetTable, searchTable, getNewPageData } =
-  useGetPageData(props.getDataFn);
+const permissionObj = usePermission('goods');
 
-getPageData();
+/**
+ * @description 组件内的查询页面数据的函数
+ * @param queryInfo 查询条件，包含分页器对象属性
+ */
+function getPageData(queryInfo: any) {
+  // 没权限则返回
+  if (!permissionObj.query) return;
+  props.getDataFn(queryInfo);
+}
+
+const { tableGenRef, resetTable, searchTable, getNewPageData } =
+  useGetPageData(getPageData);
+
+resetTable();
 </script>
 
 <template>
@@ -71,10 +84,12 @@ getPageData();
           </template>
           <!-- 以下是TableGenerator自带的插槽 -->
           <template #headerActions>
-            <el-button type="primary"
+            <el-button type="primary" v-if="permissionObj.create"
               >新增{{ props.listPageConfig.tableConfig.tableTitle }}</el-button
             >
-            <el-button type="danger">批量删除</el-button>
+            <el-button type="danger" v-if="permissionObj.delete"
+              >批量删除</el-button
+            >
           </template>
         </TableGenerator>
       </slot>

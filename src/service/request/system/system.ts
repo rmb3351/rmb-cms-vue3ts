@@ -3,13 +3,15 @@ import {
   IUserParams,
   IRoleParams,
   IUserListsResult,
-  IRoleListsResult
+  IRoleListsResult,
+  IMenuListsResult
 } from './type';
 import type { IDataType } from '../type';
 
 enum SystemAPI {
   UsersList = '/users/list',
-  RoleList = '/role/list'
+  RoleList = '/role/list',
+  MenuList = '/menu/list'
 }
 
 export function usersListRequest(data: IUserParams) {
@@ -25,5 +27,11 @@ export function roleListRequest(data: IRoleParams) {
   return rmbRequest.post<IDataType<IRoleListsResult>>({
     url: SystemAPI.RoleList,
     data
+  });
+}
+
+export function menuListRequest() {
+  return rmbRequest.post<IDataType<IMenuListsResult>>({
+    url: SystemAPI.MenuList
   });
 }

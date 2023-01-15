@@ -6,8 +6,7 @@ import TableGenerator from '@/components/table-generator';
 /**
  * @param getDataFn store里获取数据的action
  * @returns tableGenRef 组件内TableGenerator的ref属性对象
- * @returns getPageData 组件内的查询页面数据的函数
- * @returns resetTable 组件内的监听FormGenerator重置的回调
+ * @returns resetTable 组件内的监听FormGenerator重置的回调，亦用做初始查询
  * @returns searchTable 组件内的监听FormGenerator搜索的回调
  * @returns getNewPageData 组件内的监听TableGenerator翻页器对象改变的回调
  */
@@ -18,22 +17,13 @@ function useGetPageData(getDataFn: (queryInfo: any) => void) {
   const tableGenRef = ref<InstanceType<typeof TableGenerator>>();
   // 为了TableGenerator的翻页查询也能适配FormGenerator的搜索条件而存储
   const lastPageSearchData = ref({});
-  /**
-   * @description 组件内的查询页面数据的函数
-   * @param queryInfo 查询条件，包含分页器对象属性
-   */
-  function getPageData(
-    queryInfo: any = { offset: 0, size: currentPageSize.value }
-  ) {
-    getDataFn(queryInfo);
-  }
 
   /**
-   * @description 组件内的监听FormGenerator重置的回调
+   * @description 组件内的监听FormGenerator重置的回调，亦用做初始查询
    */
   function resetTable() {
     lastPageSearchData.value = {};
-    getPageData();
+    getDataFn({ offset: 0, size: currentPageSize.value });
     tableGenRef.value?.resetCurrentPage();
   }
 
@@ -43,7 +33,7 @@ function useGetPageData(getDataFn: (queryInfo: any) => void) {
    */
   function searchTable(searchData: any) {
     lastPageSearchData.value = searchData;
-    getPageData({ ...searchData, offset: 0, size: currentPageSize.value });
+    getDataFn({ ...searchData, offset: 0, size: currentPageSize.value });
     tableGenRef.value?.resetCurrentPage();
   }
 
@@ -55,12 +45,11 @@ function useGetPageData(getDataFn: (queryInfo: any) => void) {
     const { currentPage, pageSize } = pagination;
     const offset = (currentPage - 1) * pageSize;
     if (currentPageSize.value !== pageSize) currentPageSize.value = pageSize;
-    getPageData({ ...lastPageSearchData.value, offset, size: pageSize });
+    getDataFn({ ...lastPageSearchData.value, offset, size: pageSize });
   }
 
   return {
     tableGenRef,
-    getPageData,
     resetTable,
     searchTable,
     getNewPageData

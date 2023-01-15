@@ -14,9 +14,22 @@ export interface ITableConfig {
   isShowIndex?: boolean;
   tableTitle?: string;
   showCommonCol?: boolean;
+  childrenProps?: IChildrenProps;
+  showFooter?: boolean;
 }
 
 export interface IPagination {
   currentPage: number;
   pageSize: number;
+}
+
+/* 树形表格展开需要的属性 */
+export interface IChildrenProps {
+  rowKey: string | ((row: any) => string);
+  treeProps?: ITreeProp;
+}
+
+interface ITreeProp {
+  children: string;
+  hasChildren?: string;
 }

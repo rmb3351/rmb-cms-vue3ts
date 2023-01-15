@@ -9,16 +9,19 @@ import {
 import loCache from '@/utils/loCache';
 import { IMenus } from '@/service/request/login/type';
 import router from '@/router';
-import { mapMenusToRoutes } from '@/utils/mapMenus';
+import { mapMenusToRoutes, mapMenuToPermissions } from '@/utils/mapMenus';
 const useLogin = defineStore('login', {
   state: () => ({
     userInfo: {} as IUserInfo,
     token: '',
-    userMenus: [] as IMenus[]
+    userMenus: [] as IMenus[],
+    permissions: [] as string[]
   }),
   actions: {
     changeUserMenus() {
       mapMenusToRoutes(this.userMenus);
+      this.permissions = mapMenuToPermissions(this.userMenus);
+      loCache.set('permissions', this.permissions);
     },
     async accountLoginAction(loginInfo: ILoginInfo) {
       /* 三个请求有先后顺序，必须依次调用，且所有数据都在本地存一份 */
@@ -50,6 +53,8 @@ const useLogin = defineStore('login', {
         routes.forEach((route: RouteRecordRaw) => {
           if (!router.hasRoute(route.name!)) router.addRoute('main', route);
         });
+      const permissions = loCache.get('permissions');
+      if (permissions) this.permissions = loCache.get('permissions');
     }
   }
 });

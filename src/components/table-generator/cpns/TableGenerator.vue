@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType, ref } from 'vue';
-import type { IPropItem } from '../type';
+import type { IPropItem, IChildrenProps } from '../type';
 import { INIT_PAGESIZE } from '../constants';
 import TableCommonCol from './TableCommonCol.vue';
 
@@ -27,11 +27,19 @@ defineProps({
   },
   totalCount: {
     type: Number,
-    required: true
+    default: 0
   },
   showCommonCol: {
     type: Boolean,
     default: false
+  },
+  childrenProps: {
+    type: Object as PropType<IChildrenProps>,
+    default: () => ({})
+  },
+  showFooter: {
+    type: Boolean,
+    default: true
   }
 });
 
@@ -73,6 +81,7 @@ defineExpose({ resetCurrentPage });
       border
       style="width: 100%"
       @selectionChange="handleSelectionChange"
+      v-bind="childrenProps"
     >
       <el-table-column
         v-if="isShowSelection"
@@ -109,7 +118,7 @@ defineExpose({ resetCurrentPage });
       <TableCommonCol v-if="showCommonCol"> </TableCommonCol>
     </el-table>
     <!-- 表尾插槽 -->
-    <div class="table__footer">
+    <div class="table__footer" v-if="showFooter">
       <slot name="tableFooter">
         <el-pagination
           v-model:currentPage="pagination.currentPage"
