@@ -2,6 +2,7 @@
 import type { App } from 'vue';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import { globalFormatter } from './formatter';
+import { globalDirectives } from './directives';
 
 /**
  * @param app createApp函数返回值
@@ -14,4 +15,6 @@ export function globalRegister(app: App) {
   }
   // $formatter注册
   app.use(globalFormatter);
+  // 全局指令注册
+  app.use(globalDirectives);
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import commonCol from '../commonColConfig';
+import { IPermissionType } from '@/hooks/usePermission';
 </script>
 
 <template>
@@ -11,13 +12,13 @@ import commonCol from '../commonColConfig';
   >
     <template #default="scope">
       <template v-if="propItem.prop === 'actions'">
-        <el-button type="primary">
+        <el-button type="primary" v-has="IPermissionType['update']">
           <el-icon>
             <Edit />
           </el-icon>
           编辑</el-button
         >
-        <el-button type="danger">
+        <el-button type="danger" v-has="IPermissionType['delete']">
           <el-icon>
             <Delete />
           </el-icon>

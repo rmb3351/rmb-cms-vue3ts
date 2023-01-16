@@ -3,7 +3,7 @@ import { ref, PropType, computed } from 'vue';
 import FormGenerator from '@/components/form-generator';
 import TableGenerator from '@/components/table-generator';
 import useGetPageData from '@/hooks/useGetPageData';
-import usePermission from '@/hooks/usePermission';
+import usePermission, { IPermissionType } from '@/hooks/usePermission';
 import { IListPageConfig } from '../type';
 const props = defineProps({
   /* table和form的config以及初始数据dataRaws */
@@ -36,7 +36,7 @@ const slotNames = computed(() => {
 
 const pageFormData = ref(props.listPageConfig.dataRaws);
 
-const permissionObj = usePermission('goods');
+const canQuery = usePermission(IPermissionType['query']);
 
 /**
  * @description 组件内的查询页面数据的函数
@@ -44,7 +44,7 @@ const permissionObj = usePermission('goods');
  */
 function getPageData(queryInfo: any) {
   // 没权限则返回
-  if (!permissionObj.query) return;
+  if (!canQuery) return;
   props.getDataFn(queryInfo);
 }
 
@@ -84,10 +84,10 @@ resetTable();
           </template>
           <!-- 以下是TableGenerator自带的插槽 -->
           <template #headerActions>
-            <el-button type="primary" v-if="permissionObj.create"
+            <el-button type="primary" v-has="IPermissionType['create']"
               >新增{{ props.listPageConfig.tableConfig.tableTitle }}</el-button
             >
-            <el-button type="danger" v-if="permissionObj.delete"
+            <el-button type="danger" v-has="IPermissionType['delete']"
               >批量删除</el-button
             >
           </template>
