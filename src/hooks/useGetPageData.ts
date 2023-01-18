@@ -8,7 +8,7 @@ import TableGenerator from '@/components/table-generator';
  * @returns tableGenRef 组件内TableGenerator的ref属性对象
  * @returns resetTable 组件内的监听FormGenerator重置的回调，亦用做初始查询
  * @returns searchTable 组件内的监听FormGenerator搜索的回调
- * @returns getNewPageData 组件内的监听TableGenerator翻页器对象改变的回调
+ * @returns getNewPageData 分页器对象改变或页面数据改变时重新获取对应条件数据
  */
 function useGetPageData(getDataFn: (queryInfo: any) => void) {
   // 为了FormGenerator的搜索也能适配TableGenerator的pageSize而存储
@@ -38,7 +38,7 @@ function useGetPageData(getDataFn: (queryInfo: any) => void) {
   }
 
   /**
-   * @description 组件内的监听TableGenerator翻页器对象改变的回调
+   * @description 分页器对象改变或页面数据改变时重新获取对应条件数据
    * @param pagination 分页器对象
    */
   function getNewPageData(pagination: IPagination) {

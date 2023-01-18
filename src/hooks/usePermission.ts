@@ -14,7 +14,7 @@ export enum IPermissionType {
 /**
  * @returns 返回当前页面匹配权限数组的页面名
  */
-function getPageName() {
+export function getPageName() {
   const route = router.currentRoute.value;
   const paths = route.path.split('/');
   let pageName: string;

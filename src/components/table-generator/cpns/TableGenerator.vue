@@ -44,7 +44,7 @@ defineProps({
 });
 
 /* 选项改变时提交table数据 */
-const emits = defineEmits(['tableSelectionChange', 'paginationChange']);
+const emits = defineEmits(['tableSelectionChange', 'getNewPageData']);
 function handleSelectionChange(values: any[]) {
   // 交由父组件监听tableSelectionChannge处理
   emits('tableSelectionChange', values);
@@ -53,8 +53,11 @@ function handleSelectionChange(values: any[]) {
 /* 表尾默认分页器相关属性和方法 */
 const pagination = ref({ currentPage: 1, pageSize: INIT_PAGESIZE });
 
-function handlePaginationChange() {
-  emits('paginationChange', pagination.value);
+/**
+ * @description 分页器对象改变或者是通过id删除item时的回调，用于以当前的查询条件重新查询
+ */
+function emitGetNewPageData() {
+  emits('getNewPageData', pagination.value);
 }
 
 /* 供父组件中的FormGenerator重置分页器页码的方法 */
@@ -115,7 +118,11 @@ defineExpose({ resetCurrentPage });
         </template>
       </el-table-column>
       <!-- 写死公共列 -->
-      <TableCommonCol v-if="showCommonCol"> </TableCommonCol>
+      <TableCommonCol
+        v-if="showCommonCol"
+        @searchAfterDelete="emitGetNewPageData"
+      >
+      </TableCommonCol>
     </el-table>
     <!-- 表尾插槽 -->
     <div class="table__footer" v-if="showFooter">
@@ -126,8 +133,8 @@ defineExpose({ resetCurrentPage });
           :page-sizes="[10, 20, 30]"
           layout="total, sizes, prev, pager, next, jumper"
           :total="totalCount"
-          @size-change="handlePaginationChange"
-          @current-change="handlePaginationChange"
+          @size-change="emitGetNewPageData"
+          @current-change="emitGetNewPageData"
         />
       </slot>
     </div>

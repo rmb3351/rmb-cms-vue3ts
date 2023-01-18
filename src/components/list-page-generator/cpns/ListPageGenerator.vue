@@ -72,7 +72,7 @@ resetTable();
           :dataSource="dataSource"
           v-bind="props.listPageConfig.tableConfig"
           :totalCount="totalCount"
-          @paginationChange="getNewPageData"
+          @getNewPageData="getNewPageData"
         >
           <!-- 占位子组件的具名插槽，拿数据，然后留具名插槽给父组件，传数据，实现隔层传递 -->
           <template
