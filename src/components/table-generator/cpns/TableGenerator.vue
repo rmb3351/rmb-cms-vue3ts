@@ -44,21 +44,30 @@ defineProps({
 });
 
 /* 选项改变时提交table数据 */
-const emits = defineEmits(['tableSelectionChange', 'getNewPageData']);
+const emits = defineEmits([
+  'tableSelectionChange',
+  'getNewPageData',
+  'itemEditClick'
+]);
 function handleSelectionChange(values: any[]) {
   // 交由父组件监听tableSelectionChannge处理
   emits('tableSelectionChange', values);
 }
 
-/* 表尾默认分页器相关属性和方法 */
-const pagination = ref({ currentPage: 1, pageSize: INIT_PAGESIZE });
-
+/* 表格操作列相关方法 */
 /**
  * @description 分页器对象改变或者是通过id删除item时的回调，用于以当前的查询条件重新查询
  */
 function emitGetNewPageData() {
   emits('getNewPageData', pagination.value);
 }
+
+function handleItemEditClick(data: any) {
+  emits('itemEditClick', data);
+}
+
+/* 表尾默认分页器相关属性和方法 */
+const pagination = ref({ currentPage: 1, pageSize: INIT_PAGESIZE });
 
 /* 供父组件中的FormGenerator重置分页器页码的方法 */
 function resetCurrentPage() {
@@ -121,6 +130,7 @@ defineExpose({ resetCurrentPage });
       <TableCommonCol
         v-if="showCommonCol"
         @searchAfterDelete="emitGetNewPageData"
+        @editItem="handleItemEditClick"
       >
       </TableCommonCol>
     </el-table>

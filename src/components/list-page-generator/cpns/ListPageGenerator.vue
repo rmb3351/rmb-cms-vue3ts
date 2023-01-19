@@ -26,6 +26,8 @@ const props = defineProps({
   }
 });
 
+const emits = defineEmits(['showModal']);
+
 /* 从config里筛出slotNames作为数组，不用useSlots是怕下面动态渲染的插槽和写死的冲突
 map内的slotName是必有的，不加非空断言下面动态插槽名就不让用了 */
 const slotNames = computed(() => {
@@ -52,6 +54,11 @@ const { tableGenRef, resetTable, searchTable, getNewPageData } =
   useGetPageData(getPageData);
 
 resetTable();
+
+/* 处理新建按钮的点击 */
+function createOrEditItem(type: 'create' | 'edit', data?: any) {
+  emits('showModal', type === 'create' ? props.listPageConfig.dataRaws : data);
+}
 </script>
 
 <template>
@@ -73,6 +80,7 @@ resetTable();
           v-bind="props.listPageConfig.tableConfig"
           :totalCount="totalCount"
           @getNewPageData="getNewPageData"
+          @itemEditClick="itemData => createOrEditItem('edit', itemData)"
         >
           <!-- 占位子组件的具名插槽，拿数据，然后留具名插槽给父组件，传数据，实现隔层传递 -->
           <template
@@ -84,7 +92,10 @@ resetTable();
           </template>
           <!-- 以下是TableGenerator自带的插槽 -->
           <template #headerActions>
-            <el-button type="primary" v-has="IPermissionType['create']"
+            <el-button
+              type="primary"
+              v-has="IPermissionType['create']"
+              @click="createOrEditItem('create')"
               >新增{{ props.listPageConfig.tableConfig.tableTitle }}</el-button
             >
             <el-button type="danger" v-has="IPermissionType['delete']"

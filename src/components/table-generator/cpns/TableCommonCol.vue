@@ -4,7 +4,7 @@ import { IPermissionType, getPageName } from '@/hooks/usePermission';
 import useCommon from '@/store/common/common';
 
 const commonStore = useCommon();
-const emits = defineEmits(['searchAfterDelete']);
+const emits = defineEmits(['searchAfterDelete', 'editItem']);
 
 /**
  * @param item 行数据scope.row
@@ -22,6 +22,11 @@ async function deleteItem(item: any) {
     emits('searchAfterDelete');
   }
 }
+
+/* 传递数据：从TableCommonCol=》TableGenerator=》ListPageGenerator=》具体sfc */
+function editItem(item: any) {
+  emits('editItem', item);
+}
 </script>
 
 <template>
@@ -33,7 +38,11 @@ async function deleteItem(item: any) {
   >
     <template #default="scope">
       <template v-if="propItem.prop === 'actions'">
-        <el-button type="primary" v-has="IPermissionType['update']">
+        <el-button
+          type="primary"
+          v-has="IPermissionType['update']"
+          @click="editItem(scope.row)"
+        >
           <el-icon>
             <Edit />
           </el-icon>
