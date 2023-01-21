@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, ref } from 'vue';
+import { PropType, ref, watch } from 'vue';
 import type { IModalConfig } from '../type';
 import FormGenerator from '@/components/form-generator';
 const props = defineProps({
@@ -9,9 +9,9 @@ const props = defineProps({
   }
 });
 const modalVisible = ref(false);
-const modelFormData = ref(props.modalConfig.formDataRaws);
+const modalFormData = ref(props.modalConfig.formDataRaws);
 
-defineExpose({ modalVisible, modelFormData });
+defineExpose({ modalVisible, modalFormData });
 </script>
 
 <template>
@@ -24,7 +24,7 @@ defineExpose({ modalVisible, modelFormData });
     destroy-on-close
   >
     <!-- 将modalConfig直接传给FormGenerator作formConfig用 -->
-    <FormGenerator v-bind="modalConfig" v-model="modelFormData">
+    <FormGenerator v-bind="modalConfig" v-model="modalFormData">
       <template #form-header>
         {{ null }}
       </template>

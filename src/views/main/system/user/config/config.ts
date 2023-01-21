@@ -1,7 +1,7 @@
 import type { IFormConfig } from '@/components/form-generator/type';
 import type { ITableConfig } from '@/components/table-generator/type';
-import type { IListPageConfig } from '@/components/list-page-generator/type';
 import type { IModalConfig } from '@/components/modal-generator/type';
+import type { IListPageConfig } from '@/components/list-page-generator/type';
 
 /* FormGenerator的配置项 */
 const userFormConfig: IFormConfig = {
@@ -95,12 +95,6 @@ const userTableConfig: ITableConfig = {
   showCommonCol: true
 };
 
-const listPageConfig: IListPageConfig = {
-  formConfig: userFormConfig,
-  dataRaws: formDataRaws,
-  tableConfig: userTableConfig
-};
-
 /* ModalGenerator的配置项 */
 const userModalConfig: IModalConfig = {
   formItems: [
@@ -163,5 +157,12 @@ userModalConfig.formItems?.forEach(item => {
 });
 userModalConfig.formDataRaws = JSON.parse(JSON.stringify(formDataRaws));
 
+const listPageConfig: IListPageConfig = {
+  formConfig: userFormConfig,
+  tableConfig: userTableConfig,
+  modalConfig: userModalConfig,
+  dataRaws: formDataRaws
+};
+
 // 初始值对象也单独导出，给具体的FormGenerator父组件使用
-export { listPageConfig, userModalConfig };
+export { listPageConfig };

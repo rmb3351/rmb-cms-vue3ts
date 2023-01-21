@@ -38,8 +38,9 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue', 'resetTable', 'searchTable']);
 
-/* 双向绑定数据管理 */
+/* 双向绑定数据管理：兼容ModalGenerator */
 const formData = ref({ ...props.modelValue });
+// todo：从这里试着修改提交的数据，处理times和createAt以及updateAt试试
 watch(formData, newVal => emits('update:modelValue', newVal), { deep: true });
 
 /* 重置和搜索功能 */
@@ -99,8 +100,8 @@ function searchByFormData() {
                   v-for="opt in item.options"
                   :key="opt.value"
                   :value="opt.value"
-                  >{{ opt.label }}</el-option
-                >
+                  :label="opt.label"
+                ></el-option>
               </el-select>
             </template>
             <!-- 时间选择器 -->

@@ -2,6 +2,7 @@
 import { ref, PropType, computed } from 'vue';
 import FormGenerator from '@/components/form-generator';
 import TableGenerator from '@/components/table-generator';
+import ModalGenerator from '@/components/modal-generator';
 import useGetPageData from '@/hooks/useGetPageData';
 import usePermission, { IPermissionType } from '@/hooks/usePermission';
 import { IListPageConfig } from '../type';
@@ -25,8 +26,6 @@ const props = defineProps({
     required: true
   }
 });
-
-const emits = defineEmits(['showModal']);
 
 /* 从config里筛出slotNames作为数组，不用useSlots是怕下面动态渲染的插槽和写死的冲突
 map内的slotName是必有的，不加非空断言下面动态插槽名就不让用了 */
@@ -55,9 +54,14 @@ const { tableGenRef, resetTable, searchTable, getNewPageData } =
 
 resetTable();
 
+/* modal关联逻辑处理 */
+const modalRef = ref<InstanceType<typeof ModalGenerator>>();
+
 /* 处理新建按钮的点击 */
 function createOrEditItem(type: 'create' | 'edit', data?: any) {
-  emits('showModal', type === 'create' ? props.listPageConfig.dataRaws : data);
+  modalRef.value!.modalVisible = true;
+  modalRef.value!.modalFormData =
+    type === 'create' ? props.listPageConfig.dataRaws : data;
 }
 </script>
 
@@ -105,6 +109,12 @@ function createOrEditItem(type: 'create' | 'edit', data?: any) {
         </TableGenerator>
       </slot>
     </div>
+    <slot name="modalGenerator">
+      <ModalGenerator
+        ref="modalRef"
+        :modalConfig="props.listPageConfig.modalConfig"
+      ></ModalGenerator>
+    </slot>
   </div>
 </template>
 
