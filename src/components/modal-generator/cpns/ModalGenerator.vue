@@ -11,6 +11,21 @@ const props = defineProps({
 const modalVisible = ref(false);
 const modalFormData = ref(props.modalConfig.formDataRaws);
 
+function handleModalConfirm() {
+  const trueData: any = {};
+  const formValue = modalFormData.value;
+  /* 拼接数据，有时间段数组则拆 */
+  for (const key in formValue) {
+    if (key === 'times') {
+      const [createAt, updateAt] = formValue[key];
+      trueData.createAt = createAt;
+      trueData.updateAt = updateAt;
+    } else trueData[key] = formValue[key];
+  }
+  console.log(trueData);
+  modalVisible.value = false;
+}
+
 defineExpose({ modalVisible, modalFormData });
 </script>
 
@@ -34,7 +49,7 @@ defineExpose({ modalVisible, modalFormData });
     </FormGenerator>
     <template #footer>
       <el-button @click="modalVisible = false">取消</el-button>
-      <el-button type="primary" @click="modalVisible = false"> 确定 </el-button>
+      <el-button type="primary" @click="handleModalConfirm"> 确定 </el-button>
     </template>
   </el-dialog>
 </template>

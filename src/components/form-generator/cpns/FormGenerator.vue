@@ -40,8 +40,11 @@ const emits = defineEmits(['update:modelValue', 'resetTable', 'searchTable']);
 
 /* 双向绑定数据管理：兼容ModalGenerator */
 const formData = ref({ ...props.modelValue });
+
 // todo：从这里试着修改提交的数据，处理times和createAt以及updateAt试试
-watch(formData, newVal => emits('update:modelValue', newVal), { deep: true });
+watch(formData, newVal => emits('update:modelValue', newVal), {
+  deep: true
+});
 
 /* 重置和搜索功能 */
 function resetFields() {
@@ -50,17 +53,17 @@ function resetFields() {
 }
 
 function searchByFormData() {
-  const queryInfo: any = {};
+  const trueData: any = {};
   const formValue = formData.value;
-  /* 拼接参数，有时间段数组则拆 */
+  /* 拼接数据，有时间段数组则拆 */
   for (const key in formValue) {
     if (key === 'times') {
       const [createAt, updateAt] = formValue[key];
-      queryInfo.createAt = createAt;
-      queryInfo.updateAt = updateAt;
-    } else queryInfo[key] = formValue[key];
+      trueData.createAt = createAt;
+      trueData.updateAt = updateAt;
+    } else trueData[key] = formValue[key];
   }
-  emits('searchTable', { ...queryInfo });
+  emits('searchTable', { ...trueData });
 }
 </script>
 
