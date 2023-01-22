@@ -1,10 +1,9 @@
 import type { IFormConfig } from '@/components/form-generator/type';
 import type { ITableConfig } from '@/components/table-generator/type';
-import type { IModalConfig } from '@/components/modal-generator/type';
-import type { IListPageConfig } from '@/components/list-page-generator/type';
+import { configAutoComplete } from '@/utils/configAutoComplete';
 
 /* FormGenerator的配置项 */
-const goodFormConfig: IFormConfig = {
+const formConfig: IFormConfig = {
   formItems: [
     {
       type: 'input',
@@ -36,15 +35,8 @@ const goodFormConfig: IFormConfig = {
   formDataRaws: {}
 };
 
-/* 从FormGenerator的配置项中抽取字段名生成对象 */
-let formDataRaws: any = {};
-goodFormConfig.formItems?.forEach(item => {
-  formDataRaws[item.field] = item.type === 'datepicker' ? ['', ''] : '';
-});
-goodFormConfig.formDataRaws = JSON.parse(JSON.stringify(formDataRaws));
-
 /* TableGenerator的配置项 */
-const goodTableConfig: ITableConfig = {
+const tableConfig: ITableConfig = {
   propList: [
     {
       prop: 'name',
@@ -85,55 +77,6 @@ const goodTableConfig: ITableConfig = {
   showCommonCol: true
 };
 
-/* ModalGenerator的配置项 */
-const goodModalConfig: IModalConfig = {
-  formItems: [
-    {
-      type: 'input',
-      label: '商品名',
-      placeholder: '请输入商品名',
-      field: 'name'
-    },
-    {
-      type: 'select',
-      label: '状态',
-      placeholder: '请选择状态',
-      field: 'status',
-      options: [
-        { label: '在售', value: 1 },
-        { label: '售罄', value: 0 }
-      ]
-    },
-    {
-      type: 'datepicker',
-      label: '时间范围',
-      field: 'times',
-      otherOptions: {
-        startPlaceholder: '创建时间',
-        endPlaceholder: '更新时间',
-        type: 'daterange'
-      }
-    }
-  ],
-  colLayout: {
-    span: 24
-  },
-  // 由于是必传属性，先放个空对象占位
-  formDataRaws: {}
-};
-
-/* 从ModalGenerator的配置项中抽取字段名生成对象 */
-formDataRaws = {};
-goodModalConfig.formItems?.forEach(item => {
-  formDataRaws[item.field] = item.type === 'datepicker' ? ['', ''] : '';
-});
-goodModalConfig.formDataRaws = JSON.parse(JSON.stringify(formDataRaws));
-
-const listPageConfig: IListPageConfig = {
-  formConfig: goodFormConfig,
-  tableConfig: goodTableConfig,
-  modalConfig: goodModalConfig,
-  dataRaws: formDataRaws
-};
+const listPageConfig = configAutoComplete(formConfig, tableConfig);
 
 export { listPageConfig };

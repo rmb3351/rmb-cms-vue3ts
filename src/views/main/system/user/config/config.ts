@@ -1,10 +1,9 @@
 import type { IFormConfig } from '@/components/form-generator/type';
 import type { ITableConfig } from '@/components/table-generator/type';
-import type { IModalConfig } from '@/components/modal-generator/type';
-import type { IListPageConfig } from '@/components/list-page-generator/type';
+import { configAutoComplete } from '@/utils/configAutoComplete';
 
 /* FormGenerator的配置项 */
-const userFormConfig: IFormConfig = {
+const formConfig: IFormConfig = {
   formItems: [
     {
       type: 'input',
@@ -56,16 +55,8 @@ const userFormConfig: IFormConfig = {
   formDataRaws: {}
 };
 
-/* 从FormGenerator的配置项中抽取字段名生成对象 */
-let formDataRaws: any = {};
-userFormConfig.formItems?.forEach(item => {
-  formDataRaws[item.field] = item.type === 'datepicker' ? ['', ''] : '';
-});
-// 初始值对象放入formConfig替换空对象（因为必传），FormGenerator重置时用得上
-userFormConfig.formDataRaws = JSON.parse(JSON.stringify(formDataRaws));
-
 /* TableGenerator的配置项 */
-const userTableConfig: ITableConfig = {
+const tableConfig: ITableConfig = {
   propList: [
     {
       prop: 'name',
@@ -95,74 +86,7 @@ const userTableConfig: ITableConfig = {
   showCommonCol: true
 };
 
-/* ModalGenerator的配置项 */
-const userModalConfig: IModalConfig = {
-  formItems: [
-    {
-      type: 'input',
-      label: '用户名',
-      placeholder: '请输入用户名',
-      field: 'name'
-    },
-    {
-      type: 'input',
-      label: '真名',
-      placeholder: '请输入真名',
-      field: 'realname'
-    },
-    {
-      type: 'input',
-      label: '手机号',
-      placeholder: '请输入手机号',
-      field: 'cellphone'
-    },
-    {
-      type: 'select',
-      label: '用户状态',
-      placeholder: '请选择用户状态',
-      field: 'enable',
-      options: [
-        {
-          value: 1,
-          label: '在用'
-        },
-        {
-          value: 0,
-          label: '弃用'
-        }
-      ]
-    },
-    {
-      type: 'datepicker',
-      label: '时间范围',
-      field: 'times',
-      otherOptions: {
-        startPlaceholder: '创建时间',
-        endPlaceholder: '更新时间',
-        type: 'daterange'
-      }
-    }
-  ],
-  colLayout: {
-    span: 24
-  },
-  // 由于是必传属性，先放个空对象占位
-  formDataRaws: {}
-};
-
-/* 从ModalGenerator的配置项中抽取字段名生成对象 */
-formDataRaws = {};
-userModalConfig.formItems?.forEach(item => {
-  formDataRaws[item.field] = item.type === 'datepicker' ? ['', ''] : '';
-});
-userModalConfig.formDataRaws = JSON.parse(JSON.stringify(formDataRaws));
-
-const listPageConfig: IListPageConfig = {
-  formConfig: userFormConfig,
-  tableConfig: userTableConfig,
-  modalConfig: userModalConfig,
-  dataRaws: formDataRaws
-};
+const listPageConfig = configAutoComplete(formConfig, tableConfig);
 
 // 初始值对象也单独导出，给具体的FormGenerator父组件使用
 export { listPageConfig };
