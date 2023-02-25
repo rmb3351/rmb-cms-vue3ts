@@ -1,10 +1,13 @@
-import dayjs from "dayjs";
-import utc from 'dayjs/plugin/utc'
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
-dayjs.extend(utc)
+dayjs.extend(utc);
 
-const TIME_FORMAT_STRING='YYYY-MM-DD HH:mm:ss'
+const DEFAULT_TIME_FORMAT_STRING = 'YYYY-MM-DD HH:mm:ss';
 
-export function formatUtcString(utcString:string,formatString:string=TIME_FORMAT_STRING){
-  return dayjs.utc(utcString).format(formatString)
+export function formatUtcString(
+  utcString: string,
+  formatString: string = DEFAULT_TIME_FORMAT_STRING
+) {
+  return dayjs.utc(utcString).format(formatString);
 }

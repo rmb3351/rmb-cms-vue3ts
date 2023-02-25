@@ -15,7 +15,7 @@ export function mapMenusToRoutes(userMenus: IMenus[]): RouteRecordRaw[] {
   const authRoutes: RouteRecordRaw[] = [];
   // 所有路由数组
   const allRoutes: RouteRecordRaw[] = [];
-  /* 找到router文件夹下所有菜单对应路由的ts文件 */
+  /* 找到router文件夹下所有菜单对应路由的ts文件，这里的any是让返回的函数调用时返回的promise的res为any类型，即下面的res */
   const routeFiles = import.meta.glob<boolean, string, any>(
     '../router/*/*/*.ts'
   );
@@ -48,6 +48,7 @@ export function mapMenusToRoutes(userMenus: IMenus[]): RouteRecordRaw[] {
       }
     });
   });
+  console.log(authRoutes);
 
   return authRoutes;
 }

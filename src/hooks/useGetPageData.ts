@@ -16,13 +16,13 @@ function useGetPageData(getDataFn: (queryInfo: any) => void) {
   // 为了FormGenerator的重置和搜索可以重置TableGenerator的分页器页码而创建
   const tableGenRef = ref<InstanceType<typeof TableGenerator>>();
   // 为了TableGenerator的翻页查询也能适配FormGenerator的搜索条件而存储
-  const lastPageSearchData = ref({});
+  const lastSearchData = ref({});
 
   /**
    * @description 组件内的监听FormGenerator重置的回调，亦用做初始查询
    */
   function resetTable() {
-    lastPageSearchData.value = {};
+    lastSearchData.value = {};
     getDataFn({ offset: 0, size: currentPageSize.value });
     tableGenRef.value?.resetCurrentPage();
   }
@@ -32,7 +32,7 @@ function useGetPageData(getDataFn: (queryInfo: any) => void) {
    * @param searchData FormGenerator点击搜索时的搜索条件
    */
   function searchTable(searchData: any) {
-    lastPageSearchData.value = searchData;
+    lastSearchData.value = searchData;
     getDataFn({ ...searchData, offset: 0, size: currentPageSize.value });
     tableGenRef.value?.resetCurrentPage();
   }
@@ -45,7 +45,7 @@ function useGetPageData(getDataFn: (queryInfo: any) => void) {
     const { currentPage, pageSize } = pagination;
     const offset = (currentPage - 1) * pageSize;
     if (currentPageSize.value !== pageSize) currentPageSize.value = pageSize;
-    getDataFn({ ...lastPageSearchData.value, offset, size: pageSize });
+    getDataFn({ ...lastSearchData.value, offset, size: pageSize });
   }
 
   return {

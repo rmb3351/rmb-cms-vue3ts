@@ -7,5 +7,7 @@ import directives from '@/directives';
  * @description 用于全局注册指令
  */
 export function globalDirectives(app: App) {
-  Object.keys(directives).forEach(key => app.directive(key, directives[key]));
+  Object.entries(directives).forEach(([key, directive]) =>
+    app.directive(key, directive)
+  );
 }

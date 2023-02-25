@@ -45,13 +45,20 @@ class RMBRequest {
         });
       return config;
     });
-    this.instance.interceptors.response.use(res => {
-      this.loadingInstance?.close();
-      return res.data;
-    });
+    this.instance.interceptors.response.use(
+      res => {
+        this.loadingInstance?.close();
+        return res.data;
+      },
+      err => {
+        this.loadingInstance?.close();
+        console.error(`默认响应拦截器拦截到异常：${err}`);
+        return err;
+      }
+    );
   }
 
-  /* 泛型T让调用请求时传入，限制Promise的返回值类型，最终限制返回的res类型 */
+  /* 泛型T让调用请求时传入，限制Promise的返回值类型（即限制resolve内res的类型）、响应拦截器的参数和返回值类型、axios实例的request的promise返回值类型res类型 */
   request<T>(config: RMBRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       // 有单请求的请求拦截器的，执行传入的单请求拦截器
@@ -61,7 +68,7 @@ class RMBRequest {
       if (config.showLoading === !this.instanceShowLoading)
         this.showLoading = !this.instanceShowLoading;
 
-      // 让返回的res从推导AxiosResponse类型转为传入的T类型
+      // 让axios的request返回的res从推导AxiosResponse类型转为传入的T类型
       this.instance
         .request<any, T>(config)
         .then(res => {
@@ -80,6 +87,7 @@ class RMBRequest {
     });
   }
 
+  /* 这里调用request时，传不传泛型T都一样，会默认传递 */
   get<T>(config: RMBRequestConfig<T>): Promise<T> {
     return this.request({ ...config, method: 'get' });
   }

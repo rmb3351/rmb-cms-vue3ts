@@ -15,14 +15,22 @@ class LoCache {
   }
   /* 把传入的fnKeys对应的函数做成字符串再存储，避免丢失 */
   saferSet(key: string, value: any, fnKeys: string[]) {
+    // 浅拷贝一下，避免修改源对象
+    let cacheValue;
     if (Array.isArray(value)) {
+      cacheValue = [];
       for (const obj of value) {
-        for (const fnKey of fnKeys) obj[fnKey] = obj[fnKey].toString();
+        const cacheObj = { ...obj };
+        for (const fnKey of fnKeys)
+          cacheObj[fnKey] = cacheObj[fnKey].toString();
+        cacheValue.push(cacheObj);
       }
     } else if (typeof value === 'object') {
-      for (const fnKey of fnKeys) value[fnKey] = value[fnKey].toString();
+      cacheValue = { ...value };
+      for (const fnKey of fnKeys)
+        cacheValue[fnKey] = cacheValue[fnKey].toString();
     }
-    this.set(key, value);
+    this.set(key, cacheValue ?? value);
   }
   /* 对应saferSet，将对应的字符串转回函数 */
   saferGet(key: string, fnKeys: string[]) {

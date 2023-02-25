@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-/* 可以传入的拦截器类型，全部可选,并对responseInterceptor接收泛型T，方便发请求的promise里响应拦截器的传入 */
+/* 可以传入的拦截器类型，全部可选,并对responseInterceptor接收泛型T，方便发请求的promise里响应拦截器对返回的响应res进行操作和赋值 */
 export interface RMBRequestInterceptors<T = AxiosResponse> {
   requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig;
   requestInterceptorCatch?: (err: any) => any;

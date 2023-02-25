@@ -12,6 +12,9 @@ const has: Directive = {
           el.parentNode && el.parentNode.removeChild(el);
         break;
       default:
+        // 枚举漏写提示
+        const tips: never = bindings.value;
+        // 由于无法限制v-has的属性值填写，所以要在意外填写时添加错误提示
         console.error(
           `无效值：${bindings.value}。v-has指令的值应为'create' | 'update' | 'delete' | 'query'之一，可以使用IPermissionType枚举`
         );

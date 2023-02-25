@@ -44,17 +44,22 @@ const useLogin = defineStore('login', {
     syncLocalData() {
       const token = loCache.get('token');
       if (token) this.token = token;
+      else return;
       const userInfo = loCache.get('userInfo');
-      if (userInfo) this.userInfo = userInfo;
       const userMenus = loCache.get('userMenus');
-      if (userMenus) this.userMenus = userMenus;
       const routes = loCache.saferGet('routes', ['component']);
-      if (routes)
-        routes.forEach((route: RouteRecordRaw) => {
-          if (!router.hasRoute(route.name!)) router.addRoute('main', route);
-        });
       const permissions = loCache.get('permissions');
-      if (permissions) this.permissions = loCache.get('permissions');
+      /* 以下四个没有哪个都会导致效果异常，所以直接删掉token让重新登录获取，由于main.ts中本函数执行在use(router)之前，所以守卫的钩子比这个函数晚执行 */
+      if (!userInfo || !userMenus || !routes || !permissions) {
+        loCache.remove('token');
+        return;
+      }
+      this.userInfo = userInfo;
+      this.userMenus = userMenus;
+      routes.forEach((route: RouteRecordRaw) => {
+        if (!router.hasRoute(route.name!)) router.addRoute('main', route);
+      });
+      this.permissions = permissions;
     }
   }
 });
