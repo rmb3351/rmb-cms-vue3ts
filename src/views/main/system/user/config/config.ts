@@ -25,6 +25,20 @@ const formConfig: IFormConfig = {
     },
     {
       type: 'select',
+      label: '部门',
+      placeholder: '请选择用户部门',
+      field: 'departmentId',
+      options: []
+    },
+    {
+      type: 'select',
+      label: '角色',
+      placeholder: '请选择用户角色',
+      field: 'roleId',
+      options: []
+    },
+    {
+      type: 'select',
       label: '用户状态',
       placeholder: '请选择用户状态',
       field: 'enable',
@@ -60,12 +74,12 @@ const tableConfig: ITableConfig = {
   propList: [
     {
       prop: 'name',
-      'min-width': '100',
+      'min-width': '60',
       label: '用户名'
     },
     {
       prop: 'realname',
-      'min-width': '100',
+      'min-width': '60',
       label: '真名'
     },
     {
@@ -74,8 +88,20 @@ const tableConfig: ITableConfig = {
       label: '手机号'
     },
     {
+      prop: 'departmentId',
+      'min-width': '60',
+      label: '部门',
+      slotName: 'department'
+    },
+    {
+      prop: 'roleId',
+      'min-width': '60',
+      label: '角色',
+      slotName: 'role'
+    },
+    {
       prop: 'enable',
-      'min-width': '100',
+      'min-width': '60',
       label: '用户状态',
       slotName: 'status'
     }

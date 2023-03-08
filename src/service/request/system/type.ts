@@ -48,6 +48,19 @@ export interface IRoleListItem {
   menuList: IMenuList[];
 }
 
+// 仿照上面的roleList相关类型限制来一份department的
+export interface IDepartmentListsResult extends IListsResult {
+  list: IDepartmentListItem[];
+}
+export interface IDepartmentListItem {
+  id: number;
+  name: string;
+  parentId?: number;
+  createAt: string;
+  updateAt: string;
+  leader: string;
+}
+
 /* 角色管理里用到的menu接口 */
 interface IMenuList {
   id: number;
