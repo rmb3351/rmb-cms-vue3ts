@@ -100,5 +100,8 @@ class RMBRequest {
   put<T>(config: RMBRequestConfig<T>): Promise<T> {
     return this.request({ ...config, method: 'put' });
   }
+  patch<T>(config: RMBRequestConfig<T>): Promise<T> {
+    return this.request({ ...config, method: 'patch' });
+  }
 }
 export default RMBRequest;

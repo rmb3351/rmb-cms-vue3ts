@@ -8,6 +8,7 @@ import {
 } from '@/service/request/system/system';
 import type {
   IUserParams,
+  IMenuParams,
   IRoleParams,
   IUserListItem,
   IRoleListItem,
@@ -42,11 +43,10 @@ const useSystem = defineStore('system', {
       this.roleLists = list;
       this.roleCount = totalCount;
     },
-    async menuManagementAction() {
-      const res = await menuListRequest();
+    async menuManagementAction(menuParams: IMenuParams) {
       const {
         data: { list }
-      } = await menuListRequest();
+      } = await menuListRequest(menuParams);
       this.menuLists = list;
     }
   }

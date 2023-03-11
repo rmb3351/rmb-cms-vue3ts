@@ -57,19 +57,19 @@ resetTable();
 /* modal关联逻辑处理 */
 const modalRef = ref<InstanceType<typeof ModalGenerator>>();
 
-/* 处理新建按钮的点击 */
+/* 处理新建、编辑按钮的点击并将数据同步给ModalGenerator */
 function createOrEditItem(type: 'create' | 'edit', data?: any) {
   modalRef.value!.modalVisible = true;
   const formDataRaw = type === 'create' ? props.listPageConfig.dataRaws : data;
-  const formDataFinal: any = {};
-  /* 将createAt和updateAt合并为times数组 */
-  for (const key in formDataRaw) {
-    if (key === 'createAt' || key === 'updateAt') {
-      if (!formDataFinal.times) formDataFinal.times = [];
-      formDataFinal.times[key === 'createAt' ? 0 : 1] = formDataRaw[key];
-    } else formDataFinal[key] = formDataRaw[key];
-  }
-  modalRef.value!.modalFormData = formDataFinal;
+  modalRef.value!.modalFormData = formDataRaw;
+  modalRef.value!.modalIsCreate = type === 'create';
+}
+
+/**
+ * @description 通过modal修改数据后的回调，因为拿不到查询信息，所以要依靠TableGenerator
+ */
+function searchAfterModify() {
+  getNewPageData(tableGenRef.value?.pagination!);
 }
 </script>
 
@@ -121,6 +121,7 @@ function createOrEditItem(type: 'create' | 'edit', data?: any) {
       <ModalGenerator
         ref="modalRef"
         :modalConfig="props.listPageConfig.modalConfig"
+        @searchAfterModify="searchAfterModify"
       ></ModalGenerator>
     </slot>
   </div>

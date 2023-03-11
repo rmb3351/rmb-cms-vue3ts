@@ -37,4 +37,6 @@ export interface IFormConfig {
   colLayout?: IColLayout;
   // 表单每个框的初始值必传，在重置时用得上
   formDataRaws: any;
+  // 表单只在新建的状态下生成的formItems
+  formItemsOnlyInCreate?: IFormItem[];
 }

@@ -22,16 +22,6 @@ const formConfig: IFormConfig = {
       label: '路径',
       placeholder: '请输入路径',
       field: 'url'
-    },
-    {
-      type: 'datepicker',
-      label: '时间范围',
-      field: 'times',
-      otherOptions: {
-        startPlaceholder: '创建时间',
-        endPlaceholder: '更新时间',
-        type: 'daterange'
-      }
     }
   ],
   // 由于是必传属性，先放个空对象占位

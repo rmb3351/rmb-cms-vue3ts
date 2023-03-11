@@ -1,13 +1,14 @@
 import rmbRequest from '@/service';
 import {
   IUserParams,
+  IMenuParams,
   IRoleParams,
   IUserListsResult,
   IRoleListsResult,
   IMenuListsResult,
   IDepartmentListsResult
 } from './type';
-import type { IDataType, IListParams } from '../type';
+import type { IDataType } from '../type';
 
 enum SystemAPI {
   UsersList = '/users/list',
@@ -17,7 +18,7 @@ enum SystemAPI {
 }
 
 export function usersListRequest(data: IUserParams) {
-  // post可以传泛型定义返回数据类型，IDataType又可以传泛型定义data类型
+  // post可以传泛型定义返回数据类型，IDataType又可以传泛型定义返回的data类型
   return rmbRequest.post<IDataType<IUserListsResult>>({
     url: SystemAPI.UsersList,
     data
@@ -31,9 +32,10 @@ export function roleListRequest(data: IRoleParams) {
   });
 }
 
-export function menuListRequest() {
+export function menuListRequest(data: IMenuParams) {
   return rmbRequest.post<IDataType<IMenuListsResult>>({
-    url: SystemAPI.MenuList
+    url: SystemAPI.MenuList,
+    data
   });
 }
 

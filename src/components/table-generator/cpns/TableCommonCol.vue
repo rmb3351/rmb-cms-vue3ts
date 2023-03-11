@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import commonCol from '../commonColConfig';
-import { IPermissionType, getPageName } from '@/hooks/usePermission';
+import { IPermissionType } from '@/hooks/usePermission';
+import { getPageName } from '@/utils/mapPageName';
 import useCommon from '@/store/common/common';
 
 const commonStore = useCommon();

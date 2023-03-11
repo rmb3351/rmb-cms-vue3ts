@@ -73,7 +73,7 @@ const pagination = ref({ currentPage: 1, pageSize: INIT_PAGESIZE });
 function resetCurrentPage() {
   pagination.value.currentPage = 1;
 }
-defineExpose({ resetCurrentPage });
+defineExpose({ resetCurrentPage, pagination });
 </script>
 
 <template>

@@ -16,16 +16,6 @@ const formConfig: IFormConfig = {
       label: '权限',
       placeholder: '请输入权限',
       field: 'intro'
-    },
-    {
-      type: 'datepicker',
-      label: '时间范围',
-      field: 'times',
-      otherOptions: {
-        startPlaceholder: '创建时间',
-        endPlaceholder: '更新时间',
-        type: 'daterange'
-      }
     }
   ],
   formDataRaws: {}
@@ -37,7 +27,7 @@ const tableConfig: ITableConfig = {
     {
       prop: 'name',
       'min-width': '100',
-      label: '用户名'
+      label: '角色名'
     },
     {
       prop: 'intro',

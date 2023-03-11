@@ -1,4 +1,4 @@
-import router from '@/router';
+import { getPageName } from '@/utils/mapPageName';
 import useLogin from '@/store/login/login';
 
 /**
@@ -9,15 +9,6 @@ export enum IPermissionType {
   'update' = 'update',
   'delete' = 'delete',
   'query' = 'query'
-}
-
-/**
- * @returns 返回当前页面匹配权限数组的页面名
- */
-export function getPageName() {
-  const paths = router.currentRoute.value.path.split('/');
-  const pageName = paths[paths.length - 1];
-  return pageName === 'user' ? 'users' : pageName;
 }
 
 /**

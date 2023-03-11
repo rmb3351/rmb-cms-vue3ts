@@ -20,16 +20,6 @@ const formConfig: IFormConfig = {
         { label: '在售', value: 1 },
         { label: '售罄', value: 0 }
       ]
-    },
-    {
-      type: 'datepicker',
-      label: '时间范围',
-      field: 'times',
-      otherOptions: {
-        startPlaceholder: '创建时间',
-        endPlaceholder: '更新时间',
-        type: 'daterange'
-      }
     }
   ],
   formDataRaws: {}

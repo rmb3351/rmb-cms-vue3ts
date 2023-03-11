@@ -52,17 +52,25 @@ const formConfig: IFormConfig = {
           label: '弃用'
         }
       ]
-    },
-
+    }
+    // 留一份参考打样
+    // {
+    //   type: 'datepicker',
+    //   label: '时间范围',
+    //   field: 'times',
+    //   otherOptions: {
+    //     startPlaceholder: '创建时间',
+    //     endPlaceholder: '更新时间',
+    //     type: 'daterange'
+    //   }
+    // }
+  ],
+  formItemsOnlyInCreate: [
     {
-      type: 'datepicker',
-      label: '时间范围',
-      field: 'times',
-      otherOptions: {
-        startPlaceholder: '创建时间',
-        endPlaceholder: '更新时间',
-        type: 'daterange'
-      }
+      type: 'password',
+      label: '密码',
+      placeholder: '请输入密码',
+      field: 'password'
     }
   ],
   // 由于是必传属性，先放个空对象占位

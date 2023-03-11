@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, ref, watch } from 'vue';
+import { PropType, ref, watch, computed } from 'vue';
 import type { IFormItem, IColLayout } from '../type';
 const props = defineProps({
   modelValue: {
@@ -33,6 +33,16 @@ const props = defineProps({
   formDataRaws: {
     type: Object,
     required: true
+  },
+  // 是否是在ModalGenerator的create状态下渲染
+  modalIsCreate: {
+    type: Boolean,
+    default: false
+  },
+  // 上面成立时需要增加渲染的IFormItem数组
+  formItemsOnlyInCreate: {
+    type: Array as PropType<IFormItem[]>,
+    default: () => []
   }
 });
 
@@ -53,18 +63,14 @@ function resetFields() {
 }
 
 function searchByFormData() {
-  const trueData: any = {};
-  const formValue = formData.value;
-  /* 拼接数据，有时间段数组则拆 */
-  for (const key in formValue) {
-    if (key === 'times') {
-      const [createAt, updateAt] = formValue[key];
-      trueData.createAt = createAt;
-      trueData.updateAt = updateAt;
-    } else trueData[key] = formValue[key];
-  }
-  emits('searchTable', { ...trueData });
+  emits('searchTable', { ...formData.value });
 }
+
+/* 真正用于渲染的formItems */
+const formItemsFinalRender = computed(() => [
+  ...props.formItems,
+  ...(props.modalIsCreate ? props.formItemsOnlyInCreate : [])
+]);
 </script>
 
 <template>
@@ -75,7 +81,7 @@ function searchByFormData() {
       </slot>
     </div>
     <el-row>
-      <template v-for="item in formItems" :key="item.label">
+      <template v-for="item in formItemsFinalRender" :key="item.label">
         <el-col v-bind="colLayout">
           <el-form-item
             :label="item.label"

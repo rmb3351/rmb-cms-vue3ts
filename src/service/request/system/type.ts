@@ -7,15 +7,16 @@ export interface IUserParams extends IListParams {
   realname?: string;
   cellphone?: string;
   enable?: string;
-  createAt?: string;
-  updateAt?: string;
+}
+export interface IMenuParams extends IListParams {
+  name?: string;
+  type?: number;
+  url?: string;
 }
 
 export interface IRoleParams extends IListParams {
   name?: string;
   intro?: string;
-  createAt?: string;
-  updateAt?: string;
 }
 
 /* 系统管理子页面的结果参数类型 */
