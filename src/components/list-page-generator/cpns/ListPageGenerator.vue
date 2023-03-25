@@ -24,6 +24,11 @@ const props = defineProps({
   dataSource: {
     type: Array,
     required: true
+  },
+  /* ModalGenerator内接收的额外数据，在提交表单时并入提交数据 */
+  modalExtraInfo: {
+    type: Object,
+    default: () => ({})
   }
 });
 
@@ -56,13 +61,16 @@ resetTable();
 
 /* modal关联逻辑处理 */
 const modalRef = ref<InstanceType<typeof ModalGenerator>>();
-
+const emits = defineEmits(['emitItemData']);
 /* 处理新建、编辑按钮的点击并将数据同步给ModalGenerator */
 function createOrEditItem(type: 'create' | 'edit', data?: any) {
   modalRef.value!.modalVisible = true;
-  const formDataRaw = type === 'create' ? props.listPageConfig.dataRaws : data;
+  const isCreate = type === 'create';
+  const formDataRaw = isCreate ? props.listPageConfig.dataRaws : data;
   modalRef.value!.modalFormData = formDataRaw;
-  modalRef.value!.modalIsCreate = type === 'create';
+  // 将itemData发射出去，以便外层页面拿到修改数据
+  if (!isCreate) emits('emitItemData', formDataRaw);
+  modalRef.value!.modalIsCreate = isCreate;
 }
 
 /**
@@ -121,8 +129,14 @@ function searchAfterModify() {
       <ModalGenerator
         ref="modalRef"
         :modalConfig="props.listPageConfig.modalConfig"
+        :modalExtraInfo="props.modalExtraInfo"
         @searchAfterModify="searchAfterModify"
-      ></ModalGenerator>
+      >
+        <!-- 把ModalGenerator内的默认插槽往上暴露 -->
+        <template #default>
+          <slot></slot>
+        </template>
+      </ModalGenerator>
     </slot>
   </div>
 </template>

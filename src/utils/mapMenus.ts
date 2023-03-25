@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router';
 import type { IMenus } from '@/service/request/login/type';
 import type { IBreadcrumbItem } from '@/components/nav-header/type';
+import type { TreeKey } from '@/views/main/system/role/type';
 // 这里不要使用useRouter，因为不是在组件内部
 import router from '@/router';
 import loCache from './loCache';
@@ -135,4 +136,21 @@ export function getCurrentMenuBreadcrumbs(
       return getCurrentMenuBreadcrumbs(routePath, searchMenus, breadcrumbs);
   }
   return breadcrumbs;
+}
+
+/**
+ * @param menus 当前菜单数组
+ * @returns 菜单数组的所有叶子节点
+ */
+export function getMenuLeafNodeKeys(menus: IMenus[]): TreeKey[] {
+  const checkedKeys: TreeKey[] = [];
+  /* 递归将节点id加入checkedKeys */
+  function getChildrenKeys(menuList: IMenus[]) {
+    for (const menu of menuList) {
+      if (menu.children?.length) getChildrenKeys(menu.children);
+      else checkedKeys.push(menu.id);
+    }
+  }
+  getChildrenKeys(menus);
+  return checkedKeys;
 }

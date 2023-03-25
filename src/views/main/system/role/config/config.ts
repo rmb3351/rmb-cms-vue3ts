@@ -13,8 +13,8 @@ const formConfig: IFormConfig = {
     },
     {
       type: 'input',
-      label: '权限',
-      placeholder: '请输入权限',
+      label: '权限介绍',
+      placeholder: '请输入权限介绍',
       field: 'intro'
     }
   ],
@@ -32,7 +32,7 @@ const tableConfig: ITableConfig = {
     {
       prop: 'intro',
       'min-width': '100',
-      label: '权限'
+      label: '权限介绍'
     }
   ],
   isShowSelection: true,

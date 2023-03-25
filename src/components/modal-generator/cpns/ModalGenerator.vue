@@ -9,6 +9,11 @@ const props = defineProps({
   modalConfig: {
     type: Object as PropType<IModalConfig>,
     required: true
+  },
+  /* 提供给使用默认插槽渲染其他组件的页面传递数据 */
+  modalExtraInfo: {
+    type: Object,
+    default: () => ({})
   }
 });
 const emits = defineEmits(['searchAfterModify']);
@@ -26,10 +31,10 @@ const commonStore = useCommon();
  * @description 摘取有效信息，判断是新建还是编辑，并发送对应请求
  */
 async function handleModalConfirm() {
-  const trueData: any = {};
   const formValue = modalFormData.value;
   /* 拼接数据，只提交有用数据 */
-  for (const key in formValue) trueData[key] = formValue[key];
+  const trueData: any = { ...formValue, ...props.modalExtraInfo };
+
   let res;
   if (modalIsCreate.value)
     res = await commonStore.createItemAction(`/${getPageName()}`, trueData);
@@ -81,6 +86,8 @@ defineExpose({ modalVisible, modalFormData, modalIsCreate });
         {{ null }}
       </template>
     </FormGenerator>
+    <!-- 除了默认的form以外还需要特别渲染的组件 -->
+    <slot></slot>
     <template #footer>
       <el-button @click="modalVisible = false">取消</el-button>
       <el-button type="primary" @click="handleModalConfirm"> 确定 </el-button>

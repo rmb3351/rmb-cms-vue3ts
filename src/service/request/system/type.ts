@@ -70,7 +70,7 @@ interface IMenuList {
   url: string;
   icon: string;
   sort: number;
-  children: IMenus[];
+  children: IMenus[] | null;
 }
 
 /* 菜单管理里用到的menu接口 */

@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import useLogin from '@/store/login/login';
+import loCache from '@/utils/loCache';
 const loginStore = useLogin();
+const router = useRouter();
+function handleLogOut() {
+  loCache.remove('token');
+  router.push('/main');
+}
 </script>
 
 <template>
@@ -17,7 +24,9 @@ const loginStore = useLogin();
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item icon="Edit">修改信息</el-dropdown-item>
-          <el-dropdown-item icon="SwitchButton"> 注销登录 </el-dropdown-item>
+          <el-dropdown-item icon="SwitchButton" @click="handleLogOut">
+            注销登录
+          </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>

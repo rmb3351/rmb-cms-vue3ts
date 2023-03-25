@@ -52,3 +52,9 @@ export function getEntireRoleList() {
     data: { offset: 0, size: 1000 }
   });
 }
+
+export function getEntireMenuList() {
+  return rmbRequest.post<IDataType<IMenuListsResult>>({
+    url: SystemAPI.MenuList
+  });
+}
