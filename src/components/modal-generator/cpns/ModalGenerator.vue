@@ -16,7 +16,9 @@ const props = defineProps({
     default: () => ({})
   }
 });
-const emits = defineEmits(['searchAfterModify']);
+const emits = defineEmits<{
+  (e: 'searchAfterModify', isCreate: boolean): void;
+}>();
 const modalVisible = ref(false);
 const modalFormData = ref(props.modalConfig.formDataRaws);
 // 默认是编辑弹窗
@@ -53,7 +55,8 @@ async function handleModalConfirm() {
   // 这里偷懒，直接用返回的提示，提示有误为接口问题
   if (res.code === 0) {
     ElMessage.success(res.data);
-    emits('searchAfterModify');
+    // 通知ListPageGenerator重新请求，并附带告知是否是新建的数据
+    emits('searchAfterModify', modalIsCreate.value);
   } else {
     ElMessage.error(res.data);
     return;

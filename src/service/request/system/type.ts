@@ -19,6 +19,11 @@ export interface IRoleParams extends IListParams {
   intro?: string;
 }
 
+export interface IDepartmentParams extends IListParams {
+  name?: string;
+  leader?: string;
+}
+
 /* 系统管理子页面的结果参数类型 */
 export interface IUserListsResult extends IListsResult {
   list: IUserListItem[];

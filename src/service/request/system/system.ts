@@ -3,6 +3,7 @@ import {
   IUserParams,
   IMenuParams,
   IRoleParams,
+  IDepartmentParams,
   IUserListsResult,
   IRoleListsResult,
   IMenuListsResult,
@@ -35,6 +36,13 @@ export function roleListRequest(data: IRoleParams) {
 export function menuListRequest(data: IMenuParams) {
   return rmbRequest.post<IDataType<IMenuListsResult>>({
     url: SystemAPI.MenuList,
+    data
+  });
+}
+
+export function departmentListRequest(data: IDepartmentParams) {
+  return rmbRequest.post<IDataType<IDepartmentListsResult>>({
+    url: SystemAPI.DepartmentList,
     data
   });
 }

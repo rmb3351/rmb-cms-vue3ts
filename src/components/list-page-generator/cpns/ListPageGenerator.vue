@@ -6,31 +6,24 @@ import ModalGenerator from '@/components/modal-generator';
 import useGetPageData from '@/hooks/useGetPageData';
 import usePermission, { IPermissionType } from '@/hooks/usePermission';
 import { IListPageConfig } from '../type';
-const props = defineProps({
-  /* table和form的config以及初始数据dataRaws */
-  listPageConfig: {
-    type: Object as PropType<IListPageConfig>,
-    required: true
-  },
-  /* useGetPageData的参数，请求数据函数 */
-  getDataFn: {
-    type: Function as PropType<(queryInfo: any) => void>,
-    required: true
-  },
-  totalCount: {
-    type: Number,
-    default: 0
-  },
-  dataSource: {
-    type: Array,
-    required: true
-  },
-  /* ModalGenerator内接收的额外数据，在提交表单时并入提交数据 */
-  modalExtraInfo: {
-    type: Object,
-    default: () => ({})
+const props = withDefaults(
+  defineProps<{
+    /* table和form的config以及初始数据dataRaws */
+    listPageConfig: IListPageConfig;
+    /* useGetPageData的参数，请求数据函数 */
+    getDataFn: (queryInfo: any) => void;
+    totalCount?: number;
+    dataSource: Record<string, any>[];
+    /* ModalGenerator内接收的额外数据，在提交表单时并入提交数据 */
+    modalExtraInfo?: Record<string, any>;
+    /* 新建数据后需要重新获取的entireList的Action */
+    updateEntireFnList?: Array<() => void>;
+  }>(),
+  {
+    totalCount: 0,
+    modalExtraInfo: () => ({})
   }
-});
+);
 
 /* 从config里筛出slotNames作为数组，不用useSlots是怕下面动态渲染的插槽和写死的冲突
 map内的slotName是必有的，不加非空断言下面动态插槽名就不让用了 */
@@ -74,10 +67,12 @@ function createOrEditItem(type: 'create' | 'edit', data?: any) {
 }
 
 /**
+ * @param isCreate 是否是新建的modal
  * @description 通过modal修改数据后的回调，因为拿不到查询信息，所以要依靠TableGenerator
  */
-function searchAfterModify() {
+function searchAfterModify(isCreate: boolean) {
   getNewPageData(tableGenRef.value?.pagination!);
+  if (isCreate) props.updateEntireFnList?.forEach(fn => fn());
 }
 </script>
 
