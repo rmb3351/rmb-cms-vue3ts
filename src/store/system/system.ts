@@ -33,39 +33,30 @@ const useSystem = defineStore('system', {
   }),
   actions: {
     async departmentManagementAction(departmentParams: IDepartmentParams) {
+      /* 多个请求没有相互关联，并发 */
       const curDepListRes = departmentListRequest(departmentParams);
-      // entire类的有数据即可，不需要重复请求
-      if (!this.entireDepartmentList.length) {
-        // 全部的也要，做上级部门筛选用
-        const depListRes = getEntireDepartmentList();
-        this.entireDepartmentList = (await depListRes).data.list;
-      }
+      const depListRes = getEntireDepartmentList();
+      this.entireDepartmentList = (await depListRes).data.list;
       this.departmentLists = (await curDepListRes).data.list;
       this.departmentCount = (await curDepListRes).data.totalCount;
     },
     async userManagementAction(userParams: IUserParams) {
       /* 多个请求没有相互关联，并发 */
       const curUserListRes = usersListRequest(userParams);
+      const depListRes = getEntireDepartmentList();
+      const roleListRes = getEntireRoleList();
       this.userLists = (await curUserListRes).data.list;
       this.userCount = (await curUserListRes).data.totalCount;
-      if (!this.entireDepartmentList.length) {
-        const depListRes = getEntireDepartmentList();
-        this.entireDepartmentList = (await depListRes).data.list;
-      }
-      if (!this.entireRoleList.length) {
-        const roleListRes = getEntireRoleList();
-        this.entireRoleList = (await roleListRes).data.list;
-      }
+      this.entireDepartmentList = (await depListRes).data.list;
+      this.entireRoleList = (await roleListRes).data.list;
     },
     async roleManagementAction(roleParams: IRoleParams) {
       /* 多个请求没有相互关联，并发 */
       const curRoleListRes = roleListRequest(roleParams);
+      const menuListRes = getEntireMenuList();
       this.roleLists = (await curRoleListRes).data.list;
       this.roleCount = (await curRoleListRes).data.totalCount;
-      if (!this.entireMenuList.length) {
-        const menuListRes = getEntireMenuList();
-        this.entireMenuList = (await menuListRes).data.list;
-      }
+      this.entireMenuList = (await menuListRes).data.list;
     },
     async menuManagementAction(menuParams: IMenuParams) {
       const {

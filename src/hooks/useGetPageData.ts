@@ -4,11 +4,12 @@ import { INIT_PAGESIZE } from '@/components/table-generator/constants';
 import TableGenerator from '@/components/table-generator';
 
 /**
- * @param getDataFn store里获取数据的action
+ * @param getDataFn store里获取table展示数据的action
  * @returns tableGenRef 组件内TableGenerator的ref属性对象
  * @returns resetTable 组件内的监听FormGenerator重置的回调，亦用做初始查询
  * @returns searchTable 组件内的监听FormGenerator搜索的回调
  * @returns getNewPageData 分页器对象改变或页面数据改变时重新获取对应条件数据
+ * @returns searchAfterModify 通过modal修改数据后的回调，因为拿不到查询信息，所以要依靠TableGenerator
  */
 function useGetPageData(getDataFn: (queryInfo: any) => void) {
   // 为了FormGenerator的搜索也能适配TableGenerator的pageSize而存储
@@ -48,11 +49,19 @@ function useGetPageData(getDataFn: (queryInfo: any) => void) {
     getDataFn({ ...lastSearchData.value, offset, size: pageSize });
   }
 
+  /**
+   * @description 通过modal修改数据后的回调，因为拿不到查询信息，所以要依靠TableGenerator
+   */
+  function searchAfterModify() {
+    getNewPageData(tableGenRef.value?.pagination!);
+  }
+
   return {
     tableGenRef,
     resetTable,
     searchTable,
-    getNewPageData
+    getNewPageData,
+    searchAfterModify
   };
 }
 

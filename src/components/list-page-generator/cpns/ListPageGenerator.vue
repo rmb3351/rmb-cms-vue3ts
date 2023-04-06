@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, PropType, computed } from 'vue';
+import { ref, computed } from 'vue';
 import FormGenerator from '@/components/form-generator';
 import TableGenerator from '@/components/table-generator';
 import ModalGenerator from '@/components/modal-generator';
@@ -16,8 +16,6 @@ const props = withDefaults(
     dataSource: Record<string, any>[];
     /* ModalGenerator内接收的额外数据，在提交表单时并入提交数据 */
     modalExtraInfo?: Record<string, any>;
-    /* 新建数据后需要重新获取的entireList的Action */
-    updateEntireFnList?: Array<() => void>;
   }>(),
   {
     totalCount: 0,
@@ -47,8 +45,13 @@ function getPageData(queryInfo: any) {
   props.getDataFn(queryInfo);
 }
 
-const { tableGenRef, resetTable, searchTable, getNewPageData } =
-  useGetPageData(getPageData);
+const {
+  tableGenRef,
+  resetTable,
+  searchTable,
+  getNewPageData,
+  searchAfterModify
+} = useGetPageData(getPageData);
 
 resetTable();
 
@@ -64,15 +67,6 @@ function createOrEditItem(type: 'create' | 'edit', data?: any) {
   // 将itemData发射出去，以便外层页面拿到修改数据
   if (!isCreate) emits('emitItemData', formDataRaw);
   modalRef.value!.modalIsCreate = isCreate;
-}
-
-/**
- * @param isCreate 是否是新建的modal
- * @description 通过modal修改数据后的回调，因为拿不到查询信息，所以要依靠TableGenerator
- */
-function searchAfterModify(isCreate: boolean) {
-  getNewPageData(tableGenRef.value?.pagination!);
-  if (isCreate) props.updateEntireFnList?.forEach(fn => fn());
 }
 </script>
 
