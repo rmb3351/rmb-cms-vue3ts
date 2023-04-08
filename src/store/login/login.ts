@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { ILoginInfo, IUserInfo } from './type';
+import type { IAccount, IUserInfo } from '@/service/request/login/type';
 import type { RouteRecordRaw } from 'vue-router';
 import {
   accountLoginRequest,
@@ -23,7 +23,7 @@ const useLogin = defineStore('login', {
       this.permissions = mapMenuToPermissions(this.userMenus);
       loCache.set('permissions', this.permissions);
     },
-    async accountLoginAction(loginInfo: ILoginInfo) {
+    async accountLoginAction(loginInfo: IAccount) {
       /* 三个请求有先后顺序，必须依次调用，且所有数据都在本地存一份 */
       const {
         data: { token, id }

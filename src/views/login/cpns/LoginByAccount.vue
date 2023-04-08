@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import type { FormInstance } from 'element-plus';
-import { storeToRefs } from 'pinia';
 import { rules } from '../config/accout-config';
 import loCache from '@/utils/loCache';
 import useLogin from '@/store/login/login';
