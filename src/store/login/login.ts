@@ -20,7 +20,12 @@ const useLogin = defineStore('login', {
   actions: {
     changeUserMenus() {
       mapMenusToRoutes(this.userMenus);
-      this.permissions = mapMenuToPermissions(this.userMenus);
+      /* 补充故事列表模块的权限操作 */
+      this.permissions = [
+        ...mapMenuToPermissions(this.userMenus),
+        'system:story:create',
+        'system:story:query'
+      ];
       loCache.set('permissions', this.permissions);
     },
     async accountLoginAction(loginInfo: IAccount) {

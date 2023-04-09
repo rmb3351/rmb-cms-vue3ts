@@ -15,8 +15,8 @@ async function deleteItem(item: any) {
   const { code, data } = await commonStore.deleteItemByIdAction(
     `/${getPageName()}/${item.id}`
   );
-  if (code < 0) {
-    ElMessage.error(data);
+  if (typeof code !== 'number' || code < 0) {
+    ElMessage.error(data || '删除失败！' + code);
     return;
   } else {
     ElMessage.success('删除成功！');
