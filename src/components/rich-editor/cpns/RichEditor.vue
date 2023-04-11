@@ -24,7 +24,7 @@ const emits = defineEmits<{
 const editorRef = ref<HTMLDivElement>();
 // 区分是onchange修改的内容还是initEditorContent函数修改的内容
 const isInitContent = ref(false);
-// 此变量纯粹为了方便看editor的内容数据
+// editor的内容数据
 const content = reactive<IEditorInfo>({
   html: '', // 富文本转成的html
   text: '' // 纯文本内容
@@ -64,7 +64,7 @@ function setEditorConfig() {
     isInitContent.value = false;
   };
   // 配置触发 onchange 的时间频率，默认为 200ms
-  editor.config.onchangeTimeout = 500; // 修改为 500ms
+  editor.config.onchangeTimeout = 300; // 修改为 300ms
   // 配置菜单栏，删减菜单，调整顺序
   editor.config.menus = [
     'head',
@@ -119,6 +119,7 @@ onBeforeUnmount(() => {
   editorInstance.value.destroy();
   editorInstance.value = null;
 });
+defineExpose({ content });
 </script>
 
 <template>

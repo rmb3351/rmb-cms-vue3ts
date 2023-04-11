@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia';
-import { storyListRequest } from '@/service/request/story/story';
+import {
+  storyListRequest,
+  createStoryRequest
+} from '@/service/request/story/story';
 import type {
   IStoryParams,
+  IStoryContent,
   IStroyListItem
 } from '@/service/request/story/type';
 const useStory = defineStore('story', {
@@ -16,6 +20,10 @@ const useStory = defineStore('story', {
       } = await storyListRequest(storyParams);
       this.storyLists = list;
       this.storyCount = totalCount;
+    },
+    async createStoryAction(storyContent: IStoryContent) {
+      // 直接将请求的promise返回，方便页面内处理
+      return createStoryRequest(storyContent);
     }
   }
 });

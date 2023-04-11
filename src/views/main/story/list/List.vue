@@ -14,6 +14,12 @@ const storyStore = useStory();
       :dataSource="storyStore.storyLists"
       :totalCount="storyStore.storyCount"
     >
+      <template #title="scope">
+        <div v-html="scope.row.title"></div>
+      </template>
+      <template #content="scope">
+        <div v-html="scope.row.content"></div>
+      </template>
     </ListPageGenerator>
   </div>
 </template>

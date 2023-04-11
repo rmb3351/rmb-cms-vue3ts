@@ -4,6 +4,10 @@ export interface IStoryParams extends IListParams {
   title?: string;
   content?: string;
 }
+export interface IStoryContent {
+  title: string;
+  content: string;
+}
 
 export interface IStoryListResult extends IListsResult {
   list: IStroyListItem[];

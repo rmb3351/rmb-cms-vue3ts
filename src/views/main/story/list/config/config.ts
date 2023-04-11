@@ -26,13 +26,15 @@ const tableConfig: ITableConfig = {
   propList: [
     {
       prop: 'title',
-      'min-width': '100',
-      label: '标题名'
+      'min-width': '200',
+      label: '标题名',
+      slotName: 'title'
     },
     {
       prop: 'content',
-      'min-width': '100',
-      label: '内容'
+      'min-width': '200',
+      label: '内容',
+      slotName: 'content'
     }
   ],
   isShowSelection: true,
