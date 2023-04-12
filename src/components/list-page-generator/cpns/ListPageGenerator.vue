@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import FormGenerator from '@/components/form-generator';
 import TableGenerator from '@/components/table-generator';
 import ModalGenerator from '@/components/modal-generator';
@@ -54,6 +54,20 @@ const {
 } = useGetPageData(getPageData);
 
 resetTable();
+/* 数据量更改后，当前所在页数调整，避免页数超界，不过这里用不上 */
+watch(
+  () => props.totalCount,
+  newVal => {
+    const tableEl = tableGenRef.value;
+    if (!tableEl || !tableEl.pagination) return;
+    const { currentPage, pageSize } = tableEl.pagination;
+    if (newVal < (currentPage - 1) * pageSize)
+      tableEl.pagination.currentPage = Math.max(
+        Math.ceil(newVal / pageSize),
+        1
+      );
+  }
+);
 
 /* modal关联逻辑处理 */
 const modalRef = ref<InstanceType<typeof ModalGenerator>>();

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 /* 因为不是按组件形式使用，所以配置的自动按需引入无效，这里手动加上：elloading的按需引入、调用service返回的实例类型、el-loading的样式文件 */
-import { ElLoading } from 'element-plus';
 import type { LoadingInstance } from 'element-plus/es/components/loading/src/loading';
 import 'element-plus/theme-chalk/el-loading.css';
 import type { RMBRequestConfig, RMBRequestInterceptors } from './type';
@@ -52,7 +51,7 @@ class RMBRequest {
       },
       err => {
         this.loadingInstance?.close();
-        console.error(`默认响应拦截器拦截到异常：${err}`);
+        ElMessage.error(`默认响应拦截器拦截到异常：${err}`);
         return err;
       }
     );

@@ -34,6 +34,14 @@ router.beforeEach((to, from) => {
   if (to.path !== '/login') {
     const token = loCache.get('token');
     if (!token) return '/login';
+    else {
+      const tokenExpireTime = loCache.get('tokenExpireTime');
+      if (!tokenExpireTime || tokenExpireTime <= Date.now()) {
+        loCache.remove('token');
+        ElMessage.error('您的登录已经过期，请重新登录！');
+        return '/login';
+      }
+    }
   }
   // 自动定位到第一个可跳转菜单（如果有）
   if (to.path === '/main') {

@@ -6,5 +6,5 @@ const loginStore = useLogin(pinia);
  * @description 用于用户刷新页面后同步原有store的数据
  */
 export function syncStore() {
-  loginStore.syncLocalData();
+  loginStore.syncLocalStatus();
 }

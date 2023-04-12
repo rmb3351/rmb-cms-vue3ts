@@ -10,10 +10,12 @@ import loCache from '@/utils/loCache';
 import { IMenus } from '@/service/request/login/type';
 import router from '@/router';
 import { mapMenusToRoutes, mapMenuToPermissions } from '@/utils/mapMenus';
+import { TOKEN_EXPIRES } from './constants';
 const useLogin = defineStore('login', {
   state: () => ({
     userInfo: {} as IUserInfo,
     token: '',
+    tokenExpireTime: 0,
     userMenus: [] as IMenus[],
     permissions: [] as string[]
   }),
@@ -34,7 +36,9 @@ const useLogin = defineStore('login', {
         data: { token, id }
       } = await accountLoginRequest(loginInfo);
       this.token = token;
+      this.tokenExpireTime = Date.now() + TOKEN_EXPIRES;
       loCache.set('token', token);
+      loCache.set('tokenExpireTime', this.tokenExpireTime);
 
       const userInfo = await getUserInfoById(id);
       this.userInfo = userInfo.data;
@@ -45,11 +49,17 @@ const useLogin = defineStore('login', {
       loCache.set('userMenus', this.userMenus);
       this.changeUserMenus();
     },
-    /* 刷新后从localStorage同步login的几个state */
-    syncLocalData() {
+    /* 刷新后从localStorage同步login的几个state，并判断是否应该退出登录 */
+    syncLocalStatus() {
       const token = loCache.get('token');
       if (token) this.token = token;
       else return;
+      const tokenExpireTime = loCache.get('tokenExpireTime');
+      if (!tokenExpireTime || tokenExpireTime <= Date.now()) {
+        loCache.remove('token');
+        ElMessage.error('您的登录已经过期，请重新登录！');
+        return;
+      }
       const userInfo = loCache.get('userInfo');
       const userMenus = loCache.get('userMenus');
       const routes = loCache.saferGet('routes', ['component']);
