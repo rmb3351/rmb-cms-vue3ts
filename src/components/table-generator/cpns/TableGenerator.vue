@@ -44,14 +44,12 @@ defineProps({
 });
 
 /* 选项改变时提交table数据 */
-const emits = defineEmits([
-  'tableSelectionChange',
-  'getNewPageData',
-  'itemEditClick'
-]);
-function handleSelectionChange(values: any[]) {
-  // 交由父组件监听tableSelectionChannge处理
-  emits('tableSelectionChange', values);
+const emits = defineEmits(['getNewPageData', 'itemEditClick']);
+
+/* 记录选中的item */
+const chosenItems = ref<Record<string, any>[]>([]);
+function handleSelectionChange(values: Record<string, any>[]) {
+  chosenItems.value = values;
 }
 
 /* 表格操作列相关方法 */
@@ -73,7 +71,7 @@ const pagination = ref({ currentPage: 1, pageSize: INIT_PAGESIZE });
 function resetCurrentPage() {
   pagination.value.currentPage = 1;
 }
-defineExpose({ resetCurrentPage, pagination });
+defineExpose({ resetCurrentPage, pagination, chosenItems });
 </script>
 
 <template>

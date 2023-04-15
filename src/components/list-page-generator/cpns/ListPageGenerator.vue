@@ -6,6 +6,8 @@ import ModalGenerator from '@/components/modal-generator';
 import useGetPageData from '@/hooks/useGetPageData';
 import usePermission, { IPermissionType } from '@/hooks/usePermission';
 import { IListPageConfig } from '../type';
+import { getPageName } from '@/utils/mapPageName';
+import useCommon from '@/store/common/common';
 const props = withDefaults(
   defineProps<{
     /* table和form的config以及初始数据dataRaws */
@@ -82,6 +84,23 @@ function createOrEditItem(type: 'create' | 'edit', data?: any) {
   if (!isCreate) emits('emitItemData', formDataRaw);
   modalRef.value!.modalIsCreate = isCreate;
 }
+
+const commonStore = useCommon();
+/* 批量删除，没提供接口，只能逐个删除 */
+async function deleteInBatches() {
+  if (!tableGenRef.value!.chosenItems.length)
+    return ElMessage.error(`请选择要删除的数据！`); // 未选中数据
+  const ids = tableGenRef.value!.chosenItems.map(({ id }) => id);
+  const pageName = getPageName();
+  const isGoods = pageName === 'goods';
+  if (ids.some(id => id < (isGoods ? 200 : 10)))
+    return ElMessage.error(`id小于${isGoods ? 200 : 10}的数据不允许删除`); // id不合法，请求免发
+  const urls = ids.map(id => `/${pageName}/${id}`);
+  const successCount = await commonStore.deleteInBatchesAction(urls);
+  if (!successCount) ElMessage.error(`批量删除失败`);
+  else ElMessage.success(`成功批量删除${successCount}条数据`);
+  getNewPageData(tableGenRef.value!.pagination);
+}
 </script>
 
 <template>
@@ -121,7 +140,10 @@ function createOrEditItem(type: 'create' | 'edit', data?: any) {
               @click="createOrEditItem('create')"
               >新增{{ props.listPageConfig.tableConfig.tableTitle }}</el-button
             >
-            <el-button type="danger" v-has="IPermissionType['delete']"
+            <el-button
+              type="danger"
+              v-has="IPermissionType['delete']"
+              @click="deleteInBatches"
               >批量删除</el-button
             >
           </template>

@@ -8,6 +8,22 @@ import {
 const useCommon = defineStore('common', {
   actions: {
     /**
+     * @param urls 要删除的数据的请求地址数组
+     * @returns 成功删除数据条数
+     * @description 自制批量删除操作的actions
+     */
+    async deleteInBatchesAction(urls: string[]) {
+      const deleteRequests = urls.map(url => this.deleteItemByIdAction(url));
+      const results = await Promise.allSettled(deleteRequests);
+      let successCount = 0;
+      for (const res of results) {
+        if (res.status === 'fulfilled') {
+          if (res.value.code >= 0) successCount++;
+        }
+      }
+      return successCount;
+    },
+    /**
      * @param url /页面名/itemId
      * @returns 后端返回的code和data（提示）
      * @description 不同页面通过id删除表单item的通用action

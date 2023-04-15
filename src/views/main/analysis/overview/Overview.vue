@@ -3,11 +3,10 @@
 
 <template>
   <div class="Overview__wrapper">
-    <p data-we-empty-p="" style="text-align: center">
-      <font size="6"
-        >这个人<b style="">很懒</b>，<strike style="">什么都没有留下</strike
-        >~</font
-      ><span style="text-align: left"><b></b></span
+    <p data-we-empty-p="" style="text-align: center; font-size: xx-large">
+      这个人<b>很懒</b>，<del>什么都没有留下</del>~<span
+        style="text-align: left"
+        ><b></b></span
       ><span style="text-align: left"><b></b></span>
     </p>
   </div>
