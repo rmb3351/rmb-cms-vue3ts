@@ -17,9 +17,7 @@ const useCommon = defineStore('common', {
       const results = await Promise.allSettled(deleteRequests);
       let successCount = 0;
       for (const res of results) {
-        if (res.status === 'fulfilled') {
-          if (res.value.code >= 0) successCount++;
-        }
+        if (res.status === 'fulfilled' && res.value.code >= 0) successCount++;
       }
       return successCount;
     },

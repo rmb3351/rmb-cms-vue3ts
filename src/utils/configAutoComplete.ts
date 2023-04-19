@@ -2,6 +2,7 @@ import type { IFormConfig } from '@/components/form-generator/type';
 import type { ITableConfig } from '@/components/table-generator/type';
 import type { IModalConfig } from '@/components/modal-generator/type';
 import type { IListPageConfig } from '@/components/list-page-generator/type';
+import type { AnyObject } from '@/global/type';
 
 /**
  * @param formConfig FormGenerator的配置项
@@ -15,7 +16,7 @@ export function configAutoComplete(
   tableConfig: ITableConfig
 ): IListPageConfig {
   /* 从FormGenerator的配置项中抽取字段名生成对象 */
-  const dataRaws: any = {};
+  const dataRaws: AnyObject = {};
   formConfig.formItems?.forEach(item => {
     dataRaws[item.field] = item.type === 'datepicker' ? ['', ''] : '';
   });

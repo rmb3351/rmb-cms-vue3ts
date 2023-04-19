@@ -3,7 +3,11 @@
 import ListPageGenerator from '@/components/list-page-generator';
 import useStory from '@/store/story/story';
 import { listPageConfig } from './config/config';
+import type { AnyObject } from '@/global/type';
 const storyStore = useStory();
+function viewStory(storyItem: AnyObject) {
+  console.log(storyItem);
+}
 </script>
 
 <template>
@@ -13,6 +17,7 @@ const storyStore = useStory();
       :getDataFn="storyStore.storyListAction"
       :dataSource="storyStore.storyLists"
       :totalCount="storyStore.storyCount"
+      @viewItemData="viewStory"
     >
       <template #title="scope">
         <div v-html="scope.row.title"></div>

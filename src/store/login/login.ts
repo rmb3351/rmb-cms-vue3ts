@@ -22,11 +22,15 @@ const useLogin = defineStore('login', {
   actions: {
     changeUserMenus() {
       mapMenusToRoutes(this.userMenus);
-      /* 补充故事列表模块的权限操作 */
+      /* 故事列表模块的权限操作 */
+      this.permissions = mapMenuToPermissions(this.userMenus).filter(
+        permission => !permission.includes('story')
+      );
       this.permissions = [
-        ...mapMenuToPermissions(this.userMenus),
+        ...this.permissions,
         'system:story:create',
-        'system:story:query'
+        'system:story:query',
+        'system:story:detail' // 故事独有的详情权限
       ];
       loCache.set('permissions', this.permissions);
     },

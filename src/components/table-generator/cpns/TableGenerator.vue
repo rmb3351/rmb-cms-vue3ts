@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { PropType, ref } from 'vue';
-import type { IPropItem, IChildrenProps } from '../type';
+import type { IPropItem, IChildrenProps, IPagination } from '../type';
+import type { AnyObject } from '@/global/type';
 import { INIT_PAGESIZE } from '../constants';
 import TableCommonCol from './TableCommonCol.vue';
 
@@ -44,11 +45,15 @@ defineProps({
 });
 
 /* 选项改变时提交table数据 */
-const emits = defineEmits(['getNewPageData', 'itemEditClick']);
+const emits = defineEmits<{
+  (e: 'getNewPageData', pagination: IPagination): void;
+  (e: 'itemEditClick', data: AnyObject): void;
+  (e: 'itemViewClick', data: AnyObject): void;
+}>();
 
 /* 记录选中的item */
-const chosenItems = ref<Record<string, any>[]>([]);
-function handleSelectionChange(values: Record<string, any>[]) {
+const chosenItems = ref<AnyObject[]>([]);
+function handleSelectionChange(values: AnyObject[]) {
   chosenItems.value = values;
 }
 
@@ -60,8 +65,12 @@ function emitGetNewPageData() {
   emits('getNewPageData', pagination.value);
 }
 
-function handleItemEditClick(data: any) {
+function handleItemEditClick(data: AnyObject) {
   emits('itemEditClick', data);
+}
+
+function handleItemViewClick(data: AnyObject) {
+  emits('itemViewClick', data);
 }
 
 /* 表尾默认分页器相关属性和方法 */
@@ -129,6 +138,7 @@ defineExpose({ resetCurrentPage, pagination, chosenItems });
         v-if="showCommonCol"
         @searchAfterDelete="emitGetNewPageData"
         @editItem="handleItemEditClick"
+        @viewItem="handleItemViewClick"
       >
       </TableCommonCol>
     </el-table>
