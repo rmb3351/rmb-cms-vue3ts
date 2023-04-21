@@ -10,12 +10,13 @@ import { IListPageConfig } from '../type';
 import { getPageName } from '@/utils/mapPageName';
 import useCommon from '@/store/common/common';
 import type { AnyObject } from '@/global/type';
+import type { IListParams } from '@/service/request/type';
 const props = withDefaults(
   defineProps<{
     /* table和form的config以及初始数据dataRaws */
     listPageConfig: IListPageConfig;
     /* useGetPageData的参数，请求数据函数 */
-    getDataFn: (queryInfo: AnyObject) => void;
+    getDataFn: (queryInfo: IListParams) => void;
     totalCount?: number;
     dataSource: AnyObject[];
     /* ModalGenerator内接收的额外数据，在提交表单时并入提交数据 */

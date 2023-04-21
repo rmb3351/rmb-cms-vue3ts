@@ -18,6 +18,10 @@ const emits = defineEmits<{
  * @description 自动获取当前页面和行数据id删除对应item，并处理成功和失败的结果
  */
 async function deleteItem(item: AnyObject) {
+  const pageName = getPageName();
+  const isGoods = pageName === 'goods';
+  if (item.id < (isGoods ? 200 : 10))
+    return ElMessage.error(`id小于${isGoods ? 200 : 10}的数据不允许删除`); // id不合法，请求免发
   const { code, data } = await commonStore.deleteItemByIdAction(
     `/${getPageName()}/${item.id}`
   );
