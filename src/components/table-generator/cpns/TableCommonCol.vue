@@ -5,6 +5,7 @@ import { IPermissionType } from '@/hooks/usePermission';
 import { getPageName } from '@/utils/mapPageName';
 import useCommon from '@/store/common/common';
 import type { AnyObject } from '@/global/type';
+import { formatUtcString } from '@/utils/timeFormat';
 
 const commonStore = useCommon();
 const emits = defineEmits<{
@@ -92,7 +93,9 @@ function viewItem(item: AnyObject) {
         </el-popconfirm>
       </template>
       <template v-else>
-        <span>{{ $formatter.formatUtcString(scope.row[propItem.prop]) }}</span>
+        <!-- 此行一直报错说找不到$formatter无法解决 -->
+        <!-- <span>{{ $formatter.formatUtcString(scope.row[propItem.prop]) }}</span> -->
+        <span>{{ formatUtcString(scope.row[propItem.prop]) }}</span>
       </template>
     </template>
   </el-table-column>

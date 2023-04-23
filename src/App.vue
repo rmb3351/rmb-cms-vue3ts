@@ -1,7 +1,6 @@
 <script setup lang="ts">
 // element配置国际化-中文
-import { ElConfigProvider } from 'element-plus';
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
+import zhCn from 'element-plus/lib/locale/lang/zh-cn';
 </script>
 
 <template>

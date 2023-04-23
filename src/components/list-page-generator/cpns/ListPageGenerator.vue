@@ -44,7 +44,7 @@ const canQuery = usePermission(IPermissionType['query']);
  * @description 组件内的查询页面数据的函数
  * @param queryInfo 查询条件，包含分页器对象属性
  */
-function getPageData(queryInfo: AnyObject) {
+function getPageData(queryInfo: IListParams) {
   // 没权限则返回
   if (!canQuery) return;
   props.getDataFn(queryInfo);
@@ -75,13 +75,13 @@ watch(
 );
 
 const emits = defineEmits<{
-  (e: 'emitItemData', itemData: AnyObject): void;
+  (e: 'emitItemData', itemData: any): void;
   (e: 'viewItemData', itemData: AnyObject): void;
 }>();
 /* modal关联逻辑处理 */
 const modalRef = ref<InstanceType<typeof ModalGenerator>>();
 /* 处理新建、编辑按钮的点击并将数据同步给ModalGenerator */
-function createOrEditItem(type: 'create' | 'edit', data?: AnyObject) {
+function createOrEditItem(type: 'create' | 'edit', data?: any) {
   modalRef.value!.modalVisible = true;
   const isCreate = type === 'create';
   const formDataRaw = isCreate ? props.listPageConfig.dataRaws : data!;
@@ -94,13 +94,19 @@ function createOrEditItem(type: 'create' | 'edit', data?: AnyObject) {
 const commonStore = useCommon();
 /* 批量删除，没提供接口，只能逐个删除 */
 async function deleteInBatches() {
-  if (!tableGenRef.value!.chosenItems.length)
-    return ElMessage.error(`请选择要删除的数据！`); // 未选中数据
+  if (!tableGenRef.value!.chosenItems.length) {
+    // 未选中数据
+    ElMessage.error(`请选择要删除的数据！`);
+    return;
+  }
   const ids = tableGenRef.value!.chosenItems.map(({ id }) => id);
   const pageName = getPageName();
   const isGoods = pageName === 'goods';
-  if (ids.some(id => id < (isGoods ? 200 : 10)))
-    return ElMessage.error(`id小于${isGoods ? 200 : 10}的数据不允许删除`); // id不合法，请求免发
+  if (ids.some(id => id < (isGoods ? 200 : 10))) {
+    // id不合法，请求免发
+    ElMessage.error(`id小于${isGoods ? 200 : 10}的数据不允许删除`);
+    return;
+  }
   const urls = ids.map(id => `/${pageName}/${id}`);
   const successCount = await commonStore.deleteInBatchesAction(urls);
   if (!successCount) ElMessage.error(`批量删除失败`);

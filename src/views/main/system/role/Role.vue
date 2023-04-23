@@ -1,7 +1,6 @@
 <!-- 角色管理页面 -->
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
-/* 全局自动引入后再用具体的指定引入，会有问题 */
 import { ElTree as Tree } from 'element-plus';
 import ListPageGenerator from '@/components/list-page-generator';
 import { listPageConfig } from './config/config';
