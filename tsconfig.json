@@ -40,7 +40,13 @@
     }
   },
   // 需要做ts解析的文件有哪些
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "./auto-imports.d.ts"
+  ],
   // 在需要做ts解析的文件内如果引入了node_modules内的文件，不对引入文件做解析
   "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
