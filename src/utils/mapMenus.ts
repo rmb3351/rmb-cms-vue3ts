@@ -21,7 +21,7 @@ export function mapMenusToRoutes(userMenus: IMenus[]): RouteRecordRaw[] {
     boolean,
     string,
     { default: RouteRecordRaw }
-  >('../router/*/*/*.ts');
+  >('../router/**/*.ts');
   const routeFilesLength = Object.keys(routeFiles).length;
 
   // 匹配菜单并添加对应的权限路由
