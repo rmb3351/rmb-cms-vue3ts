@@ -4,8 +4,8 @@ import { ref } from 'vue';
 import useStory from '@/store/story/story';
 import RichEditor from '@/components/rich-editor';
 
-const titleHtmlStr = ref('<b>默认</b>标题');
-const contentHtmlStr = ref('<b>默认</b>内容');
+const titleHtmlStr = ref('默认<b>标题</b>');
+const contentHtmlStr = ref('默认<b>内容</b>');
 const titleEditorRef = ref<InstanceType<typeof RichEditor>>();
 const contentEditorRef = ref<InstanceType<typeof RichEditor>>();
 const storyStore = useStory();
@@ -26,8 +26,8 @@ async function publishStory() {
   });
   if (code === 0) {
     ElMessage.success(data);
-    titleHtmlStr.value = '<b>默认</b>标题';
-    contentHtmlStr.value = '<b>默认</b>内容';
+    titleHtmlStr.value = '默认<b>标题</b>';
+    contentHtmlStr.value = '默认<b>内容</b>';
   } else ElMessage.error(data);
 }
 </script>

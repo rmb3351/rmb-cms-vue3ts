@@ -16,10 +16,12 @@ export function mapMenusToRoutes(userMenus: IMenus[]): RouteRecordRaw[] {
   const authRoutes: RouteRecordRaw[] = [];
   // 所有路由数组
   const allRoutes: RouteRecordRaw[] = [];
-  /* 找到router文件夹下所有菜单对应路由的ts文件，这里的any是让返回的函数调用时返回的promise的res为any类型，即下面的res */
-  const routeFiles = import.meta.glob<boolean, string, any>(
-    '../router/*/*/*.ts'
-  );
+  /* 找到router文件夹下所有菜单对应路由的ts文件，这里的第三个泛型是返回的函数调用后返回的promise的res的类型，即下面的res */
+  const routeFiles = import.meta.glob<
+    boolean,
+    string,
+    { default: RouteRecordRaw }
+  >('../router/*/*/*.ts');
   const routeFilesLength = Object.keys(routeFiles).length;
 
   // 匹配菜单并添加对应的权限路由
@@ -49,7 +51,6 @@ export function mapMenusToRoutes(userMenus: IMenus[]): RouteRecordRaw[] {
       }
     });
   });
-  console.log(authRoutes);
 
   return authRoutes;
 }

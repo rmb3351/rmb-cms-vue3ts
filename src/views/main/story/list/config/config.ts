@@ -8,13 +8,13 @@ const formConfig: IFormConfig = {
     {
       type: 'input',
       label: '标题名',
-      placeholder: '请输入类别名',
+      placeholder: '请输入标题名',
       field: 'title'
     },
     {
       type: 'input',
       label: '内容',
-      placeholder: '请输入类别名',
+      placeholder: '请输入内容',
       field: 'content'
     }
   ],

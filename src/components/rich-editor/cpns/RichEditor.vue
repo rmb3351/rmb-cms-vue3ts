@@ -64,7 +64,7 @@ function setEditorConfig() {
     isInitContent.value = false;
   };
   // 配置触发 onchange 的时间频率，默认为 200ms
-  editor.config.onchangeTimeout = 300; // 修改为 300ms
+  editor.config.onchangeTimeout = 50; // 修改为 300ms
   // 配置菜单栏，删减菜单，调整顺序
   editor.config.menus = [
     'head',
